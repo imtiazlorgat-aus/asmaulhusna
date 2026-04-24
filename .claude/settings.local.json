@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(node -e \"const l = require\\('lucide-react'\\); ['Eye','EyeOff','Type','Globe','Languages','GlobeOff','ALargeSmall','CaseSensitive','Captions','CaptionsOff','Baseline','WholeWord'].forEach\\(n => console.log\\(n, n in l ? 'OK' : 'MISSING'\\)\\);\")"
     ]
   }
 }

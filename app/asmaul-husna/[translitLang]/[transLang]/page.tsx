@@ -91,7 +91,7 @@ export default async function ViewerPage({ params }: PageProps) {
         </div>
         <div className="italic text-gray-500 text-center">
           And to Allah belong the best names, so invoke Him by them.{" "}
-          <span className="text-xs">[Quran | Surah Al-A&apos;raf | 7:180]</span>
+          <span className="text-xs">(Quran - Surah Al-A&apos;raf - 7:180)</span>
         </div>
       </div>
       <NameGrid

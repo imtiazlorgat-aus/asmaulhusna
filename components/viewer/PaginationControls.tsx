@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   ChevronFirst,
   ChevronLast,
   ChevronLeft,
   ChevronRight,
-} from 'lucide-react';
+} from "lucide-react";
 
 interface PaginationControlsProps {
   currentPage: number;
@@ -47,6 +47,7 @@ export function PaginationControls({
         onClick={onFirst}
         disabled={atStart}
         aria-label="First page"
+        className="hover:bg-gray-200 hover:dark:bg-gray-800"
       >
         <ChevronFirst className="h-4 w-4" />
       </Button>
@@ -56,6 +57,7 @@ export function PaginationControls({
         onClick={onPrevious}
         disabled={atStart}
         aria-label="Previous page"
+        className="hover:bg-gray-200 hover:dark:bg-gray-800"
       >
         <ChevronLeft className="h-4 w-4" />
       </Button>
@@ -73,6 +75,7 @@ export function PaginationControls({
         onClick={onNext}
         disabled={atEnd}
         aria-label="Next page"
+        className="hover:bg-gray-200 hover:dark:bg-gray-800"
       >
         <ChevronRight className="h-4 w-4" />
       </Button>
@@ -82,6 +85,7 @@ export function PaginationControls({
         onClick={onLast}
         disabled={atEnd}
         aria-label="Last page"
+        className="hover:bg-gray-200 hover:dark:bg-gray-800"
       >
         <ChevronLast className="h-4 w-4" />
       </Button>

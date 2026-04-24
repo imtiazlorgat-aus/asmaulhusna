@@ -76,10 +76,6 @@ export function NameGrid({
   // transition by keying on hydration state.
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center gap-4">
-        <VisibilityToggles />
-      </div>
-
       <div
         className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
         onTouchStart={handleTouchStart}
@@ -103,6 +99,10 @@ export function NameGrid({
         onNext={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
         onLast={() => setCurrentPage(totalPages)}
       />
+
+      <div className="flex justify-center">
+        <VisibilityToggles />
+      </div>
     </div>
   );
 }
