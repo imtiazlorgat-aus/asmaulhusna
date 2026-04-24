@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# asmaulhusna.co.za
 
-## Getting Started
+A responsive website for Muslims to read and reflect on the 99 Names of
+Allah (Asmaul Husna), with configurable Arabic, transliteration, and
+translation display.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Next.js 15 (App Router) + TypeScript
+- Tailwind CSS + shadcn/ui + Lucide icons
+- PostgreSQL via [`postgres`](https://github.com/porsager/postgres) (no ORM)
+- Zustand with localStorage persistence for user settings
+- Self-hosted KFGQPC Uthmanic Hafs font via `next/font/local`
+- Local Postgres for dev, Aiven for QA/prod
+- Deployed to Netlify
+
+## Structure
+
+```
+app/
+  page.tsx                          # redirect to /asmaul-husna
+  about/page.tsx
+  asmaul-husna/
+    page.tsx                        # redirect to default language pair
+    [translitLang]/[transLang]/page.tsx   # main viewer (SSG + ISR)
+    settings/page.tsx
+
+components/
+  viewer/      # NamePanel, NameGrid, PaginationControls, VisibilityToggles
+  settings/    # FontSizeSlider, LanguageSelect, BackgroundImagePicker
+  layout/      # Header, Footer
+
+lib/
+  db/          # client, queries, types
+  store/       # Zustand settings store
+  fonts/       # Uthmanic font loader
+
+db/
+  migrations/  # schema DDL
+  seeds/       # starter data
+  apply.sh     # helper to run against a DATABASE_URL
+
+public/
+  fonts/       # KFGQPC Uthmanic Hafs
+  backgrounds/ # curated panel backgrounds
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Getting started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# 1. Install deps
+npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# 2. Start a local Postgres and apply schema + seeds
+createdb --encoding=UTF8 --locale=en_US.UTF-8 --template=template0 asmaulhusna
+export DATABASE_URL=postgres://localhost:5432/asmaulhusna
+./db/apply.sh
 
-## Learn More
+# 3. Configure env
+cp .env.example .env.local
+# edit .env.local to set DATABASE_URL
 
-To learn more about Next.js, take a look at the following resources:
+# 4. Run dev server
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Database** → Aiven Postgres. See `db/README.md` for details.
+- **Site** → Netlify. Set `DATABASE_URL` in Netlify env vars.
 
-## Deploy on Vercel
+## Content
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The 99 names seed (`db/seeds/002_names.sql`) and English translations
+(`db/seeds/003_translations_en.sql`) are **drafts pending scholarly review**.
+See `db/README.md` for details on the review process and known areas of
+nuance.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Urdu, Indonesian, and Malay translation files are stubs awaiting
+scholarly contribution.
