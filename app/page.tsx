@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation';
+﻿import { redirect } from 'next/navigation';
 
 /**
  * Root redirect. v1 is a single-feature app — there's nothing at `/`
