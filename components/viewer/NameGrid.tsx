@@ -61,13 +61,8 @@ export function NameGrid({
   // transition by keying on hydration state.
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center gap-4">
         <VisibilityToggles />
-        {hasHydrated && (
-          <span className="text-sm text-muted-foreground">
-            {names.length} names
-          </span>
-        )}
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -28,11 +28,13 @@ function createClient() {
 
   return postgres(url, {
     ssl,
-    max: 10,            // connection pool cap
-    idle_timeout: 20,   // close idle connections after 20s
+    // Keep the pool small: during Next.js prerendering each worker spawns its
+    // own client (the globalThis singleton is skipped in production), so
+    // max × worker-count must stay under Aiven's connection limit.
+    max: 2,
+    idle_timeout: 10,
     connect_timeout: 10,
-    // Serialize Postgres errors so they show up usefully in Netlify logs.
-    onnotice: () => {}, // silence NOTICE output
+    onnotice: () => {},
   });
 }
 
