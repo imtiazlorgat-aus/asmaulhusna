@@ -34,7 +34,7 @@ export interface Settings {
  * should see something readable on any reasonable screen size.
  */
 export const DEFAULT_SETTINGS: Settings = {
-  namesPerPage: 6,
+  namesPerPage: 3,
   showTransliteration: true,
   showTranslation: true,
   transliterationLanguage: 'en',

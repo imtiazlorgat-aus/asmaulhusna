@@ -21,12 +21,13 @@ function createClient() {
     throw new Error('DATABASE_URL is not set');
   }
 
-  // Aiven requires SSL in production. For local dev against a plain
-  // Postgres instance, ssl:false avoids a needless handshake.
-  const isProd = process.env.NODE_ENV === 'production';
+  // Derive SSL requirement from the URL itself so it works in `next dev`
+  // (Next.js overrides NODE_ENV to "development" regardless of .env.local).
+  const sslMode = new URL(url).searchParams.get('sslmode');
+  const ssl = sslMode === 'require' || sslMode === 'verify-full' ? 'require' : false;
 
   return postgres(url, {
-    ssl: isProd ? 'require' : false,
+    ssl,
     max: 10,            // connection pool cap
     idle_timeout: 20,   // close idle connections after 20s
     connect_timeout: 10,
