@@ -51,7 +51,7 @@ export function NamePanel({
 
   return (
     <Card
-      className="relative flex flex-col items-center justify-center gap-4 overflow-hidden p-6 text-center"
+      className="relative flex flex-col items-center justify-center gap-4 overflow-hidden p-6 text-center shadow-lg"
       style={
         backgroundImageUrl
           ? {

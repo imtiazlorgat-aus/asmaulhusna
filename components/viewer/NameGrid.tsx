@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { NamePanel } from './NamePanel';
 import { PaginationControls } from './PaginationControls';
 import { VisibilityToggles } from './VisibilityToggles';
@@ -38,6 +38,21 @@ export function NameGrid({
   const hasHydrated = useSettings((s) => s.hasHydrated);
 
   const [currentPage, setCurrentPage] = useState(1);
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStart.current) return;
+    const dx = e.changedTouches[0].clientX - touchStart.current.x;
+    const dy = e.changedTouches[0].clientY - touchStart.current.y;
+    touchStart.current = null;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+    if (dx < 0) setCurrentPage((p) => Math.min(totalPages, p + 1));
+    else setCurrentPage((p) => Math.max(1, p - 1));
+  };
 
   // Derive totals from the current slice size.
   const totalPages = Math.max(1, Math.ceil(names.length / namesPerPage));
@@ -65,7 +80,11 @@ export function NameGrid({
         <VisibilityToggles />
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         {visibleNames.map((name) => (
           <NamePanel
             key={name.id}

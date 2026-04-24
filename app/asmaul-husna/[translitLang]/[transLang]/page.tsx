@@ -73,9 +73,9 @@ export default async function ViewerPage({ params }: PageProps) {
   return (
     <main className="container mx-auto p-6">
       <div className="mb-6 flex flex-col gap-2">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
           <h1 className="text-2xl font-semibold">Asma-ul-Husna</h1>
-          <h2 className="text-xl font-semibold text-gray-400">
+          <h2 className="text-xl font-semibold text-gray-400 text-center">
             The 99 Names and Attributes of Allah (SWT)
           </h2>
           <div className="flex items-center gap-2">
