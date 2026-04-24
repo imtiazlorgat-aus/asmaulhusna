@@ -9,6 +9,7 @@ import {
 } from '@/lib/db/queries';
 import { NameGrid } from '@/components/viewer/NameGrid';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/theme/ThemeToggle';
 
 export const revalidate = 86400;
 
@@ -56,12 +57,15 @@ export default async function ViewerPage({ params }: PageProps) {
     <main className="container mx-auto p-6">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Asmaul Husna</h1>
-        <Button variant="outline" size="sm" asChild>
-          <Link href="/asmaul-husna/settings">
-            <SettingsIcon className="mr-2 h-4 w-4" />
-            Settings
-          </Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/asmaul-husna/settings">
+              <SettingsIcon className="mr-2 h-4 w-4" />
+              Settings
+            </Link>
+          </Button>
+        </div>
       </div>
       <NameGrid
         names={names}
