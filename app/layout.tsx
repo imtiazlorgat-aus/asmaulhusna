@@ -1,21 +1,66 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { uthmanic } from "@/lib/fonts/uthmanic";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const SITE_URL = "https://asmaulhusna.co.za";
+const SITE_NAME = "Asmaul Husna";
+const SITE_DESCRIPTION =
+  "Read and reflect on the 99 Names of Allah in Arabic, with transliteration and translation.";
 
 export const metadata: Metadata = {
-  title: "Asmaul Husna",
-  description: "Read and reflect on the 99 Names of Allah",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_NAME,
+    template: `%s — ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME }],
+  keywords: [
+    "Asmaul Husna",
+    "99 Names of Allah",
+    "Islam",
+    "Islamic",
+    "Arabic",
+    "Transliteration",
+    "Translation",
+    "Uthmanic",
+  ],
+  openGraph: {
+    type: "website",
+    locale: "en_ZA",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: SITE_NAME,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.png", type: "image/png", sizes: "32x32" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180" }],
+  },
 };
 
 export default function RootLayout({
@@ -24,13 +69,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // suppressHydrationWarning is recommended by next-themes — the
-    // theme class is injected before React hydrates, causing a
-    // harmless mismatch warning without this flag.
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${uthmanic.variable} h-full antialiased`}
+      className={`${uthmanic.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider
@@ -39,7 +81,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <div className="flex min-h-full flex-1 flex-col">
+            <div className="flex-1">{children}</div>
+            <Footer />
+          </div>
         </ThemeProvider>
       </body>
     </html>
