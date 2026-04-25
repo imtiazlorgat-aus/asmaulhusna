@@ -75,7 +75,7 @@ export default async function ViewerPage({ params }: PageProps) {
       <div className="mb-6 flex flex-col gap-2">
         <div className="flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
           <h1 className="text-2xl font-semibold">Asma-ul-Husna</h1>
-          <h2 className="text-xl font-semibold text-gray-400 text-center">
+          <h2 className="text-lg font-semibold text-gray-400 text-center">
             The 99 Names and Attributes of Allah (SWT)
           </h2>
           <div className="flex items-center gap-2">
@@ -89,7 +89,10 @@ export default async function ViewerPage({ params }: PageProps) {
             </Button>
           </div>
         </div>
-        <div className="italic text-gray-500 text-center">
+        <div className="text-gray-500 text-center text-xl">
+          وَلِلَّهِ ٱلۡأَسۡمَآءُ ٱلۡحُسۡنَىٰ فَٱدۡعُوهُ بِهَاۖ
+        </div>
+        <div className="italic text-gray-500 text-center text-xs">
           And to Allah belong the best names, so invoke Him by them.{" "}
           <span className="text-xs">(Quran - Surah Al-A&apos;raf - 7:180)</span>
         </div>

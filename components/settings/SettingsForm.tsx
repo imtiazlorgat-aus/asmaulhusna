@@ -1,19 +1,16 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Slider } from '@/components/ui/slider';
-import { FontSizeSlider } from './FontSizeSlider';
-import { LanguageSelect } from './LanguageSelect';
-import { BackgroundImagePicker } from './BackgroundImagePicker';
-import { NamePanel } from '@/components/viewer/NamePanel';
-import {
-  useSettings,
-  SETTINGS_BOUNDS,
-} from '@/lib/store/settings-store';
-import type { LanguageRow, NameWithTranslations } from '@/lib/db/types';
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import { FontSizeSlider } from "./FontSizeSlider";
+import { LanguageSelect } from "./LanguageSelect";
+import { BackgroundImagePicker } from "./BackgroundImagePicker";
+import { NamePanel } from "@/components/viewer/NamePanel";
+import { useSettings, SETTINGS_BOUNDS } from "@/lib/store/settings-store";
+import type { LanguageRow, NameWithTranslations } from "@/lib/db/types";
 
 interface SettingsFormProps {
   languages: LanguageRow[];
@@ -23,9 +20,9 @@ interface SettingsFormProps {
    */
   previewName: NameWithTranslations;
   /** Direction for the preview's transliteration (from the current transliterationLanguage). */
-  previewTransliterationDirection: 'ltr' | 'rtl';
+  previewTransliterationDirection: "ltr" | "rtl";
   /** Direction for the preview's translation (from the current translationLanguage). */
-  previewTranslationDirection: 'ltr' | 'rtl';
+  previewTranslationDirection: "ltr" | "rtl";
 }
 
 export function SettingsForm({
@@ -37,29 +34,24 @@ export function SettingsForm({
   const router = useRouter();
 
   // Subscribe to each field individually so we only re-render on real changes.
-  const namesPerPage              = useSettings((s) => s.namesPerPage);
-  const transliterationLanguage   = useSettings((s) => s.transliterationLanguage);
-  const translationLanguage       = useSettings((s) => s.translationLanguage);
-  const arabicFontSize            = useSettings((s) => s.arabicFontSize);
-  const transliterationFontSize   = useSettings((s) => s.transliterationFontSize);
-  const translationFontSize       = useSettings((s) => s.translationFontSize);
-  const backgroundImageUrl        = useSettings((s) => s.backgroundImageUrl);
+  const namesPerPage = useSettings((s) => s.namesPerPage);
+  const transliterationLanguage = useSettings((s) => s.transliterationLanguage);
+  const arabicFontSize = useSettings((s) => s.arabicFontSize);
+  const transliterationFontSize = useSettings((s) => s.transliterationFontSize);
+  const translationFontSize = useSettings((s) => s.translationFontSize);
+  const backgroundImageUrl = useSettings((s) => s.backgroundImageUrl);
 
   const update = useSettings((s) => s.update);
-  const reset  = useSettings((s) => s.reset);
+  const reset = useSettings((s) => s.reset);
 
   /**
    * Updating a language in settings should both persist the choice
    * and navigate to the matching viewer route — otherwise the current
    * route's URL params still dictate what the viewer page fetches.
    */
-  const handleTransliterationLanguageChange = (code: string) => {
-    update({ transliterationLanguage: code });
-    router.push(`/asmaul-husna/${code}/${translationLanguage}`);
-  };
-  const handleTranslationLanguageChange = (code: string) => {
-    update({ translationLanguage: code });
-    router.push(`/asmaul-husna/${transliterationLanguage}/${code}`);
+  const handleLanguageChange = (code: string) => {
+    update({ transliterationLanguage: code, translationLanguage: code });
+    router.push(`/asmaul-husna/${code}/${code}`);
   };
 
   return (
@@ -91,24 +83,15 @@ export function SettingsForm({
 
         {/* Languages */}
         <Card className="p-6">
-          <h2 className="mb-4 text-lg font-semibold">Languages</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <LanguageSelect
-              id="transliteration-language"
-              label="Transliteration language"
-              value={transliterationLanguage}
-              languages={languages}
-              onChange={handleTransliterationLanguageChange}
-              excludeArabic
-            />
-            <LanguageSelect
-              id="translation-language"
-              label="Translation language"
-              value={translationLanguage}
-              languages={languages}
-              onChange={handleTranslationLanguageChange}
-            />
-          </div>
+          <h2 className="mb-4 text-lg font-semibold">Language</h2>
+          <LanguageSelect
+            id="language"
+            // label="Language"
+            value={transliterationLanguage}
+            languages={languages}
+            onChange={handleLanguageChange}
+            excludeArabic
+          />
         </Card>
 
         {/* Font sizes */}
@@ -135,7 +118,7 @@ export function SettingsForm({
               max={SETTINGS_BOUNDS.transliterationFontSize.max}
               step={SETTINGS_BOUNDS.transliterationFontSize.step}
               onChange={(v) => update({ transliterationFontSize: v })}
-              previewText={previewName.transliteration ?? 'Ar-Rahman'}
+              previewText={previewName.transliteration ?? "Ar-Rahman"}
               previewDirection={previewTransliterationDirection}
             />
             <FontSizeSlider
@@ -146,7 +129,7 @@ export function SettingsForm({
               max={SETTINGS_BOUNDS.translationFontSize.max}
               step={SETTINGS_BOUNDS.translationFontSize.step}
               onChange={(v) => update({ translationFontSize: v })}
-              previewText={previewName.translation ?? 'The Most Compassionate'}
+              previewText={previewName.translation ?? "The Most Compassionate"}
               previewDirection={previewTranslationDirection}
             />
           </div>
@@ -166,7 +149,7 @@ export function SettingsForm({
           <Button
             variant="outline"
             onClick={() => {
-              if (confirm('Reset all settings to defaults?')) {
+              if (confirm("Reset all settings to defaults?")) {
                 reset();
               }
             }}

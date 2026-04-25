@@ -49,9 +49,17 @@ export function NameGrid({
     const dx = e.changedTouches[0].clientX - touchStart.current.x;
     const dy = e.changedTouches[0].clientY - touchStart.current.y;
     touchStart.current = null;
-    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
-    if (dx < 0) setCurrentPage((p) => Math.min(totalPages, p + 1));
-    else setCurrentPage((p) => Math.max(1, p - 1));
+    const absDx = Math.abs(dx);
+    const absDy = Math.abs(dy);
+    if (absDx >= 50 && absDx >= absDy) {
+      // Horizontal: left → next, right → previous
+      if (dx < 0) setCurrentPage((p) => Math.min(totalPages, p + 1));
+      else setCurrentPage((p) => Math.max(1, p - 1));
+    } else if (absDy >= 50 && absDy > absDx) {
+      // Vertical: up → next (same as left), down → previous (same as right)
+      if (dy < 0) setCurrentPage((p) => Math.min(totalPages, p + 1));
+      else setCurrentPage((p) => Math.max(1, p - 1));
+    }
   };
 
   // Derive totals from the current slice size.

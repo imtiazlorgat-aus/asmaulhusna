@@ -1,18 +1,17 @@
-'use client';
+"use client";
 
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import type { LanguageRow } from '@/lib/db/types';
+} from "@/components/ui/select";
+import type { LanguageRow } from "@/lib/db/types";
 
 interface LanguageSelectProps {
   id: string;
-  label: string;
+  // label: string;
   value: string;
   languages: LanguageRow[];
   onChange: (code: string) => void;
@@ -25,19 +24,18 @@ interface LanguageSelectProps {
 
 export function LanguageSelect({
   id,
-  label,
   value,
   languages,
   onChange,
   excludeArabic,
 }: LanguageSelectProps) {
   const options = excludeArabic
-    ? languages.filter((l) => l.code !== 'ar')
+    ? languages.filter((l) => l.code !== "ar")
     : languages;
 
   return (
     <div className="flex flex-col gap-2">
-      <Label htmlFor={id}>{label}</Label>
+      {/* <Label htmlFor={id}>{label}</Label> */}
       <Select value={value} onValueChange={onChange}>
         <SelectTrigger id={id}>
           <SelectValue />
