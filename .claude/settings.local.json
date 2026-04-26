@@ -8,7 +8,15 @@
       "Bash(pnpm add *)",
       "Bash(node -e \"const r = require\\('radix-ui'\\); console.log\\(Object.keys\\(r\\).filter\\(k => k.toLowerCase\\(\\).includes\\('switch'\\)\\)\\)\")",
       "Bash(node -e \"const { Switch } = require\\('radix-ui'\\); console.log\\(Object.keys\\(Switch\\)\\)\")",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(git config *)",
+      "Read(//c/Users/imtia/**)",
+      "Read(//c/Users/imtia/.ssh/**)",
+      "Bash(mkdir -p ~/.ssh)",
+      "Bash(ssh-keygen -t ed25519 -C \"imtiaz.lorgat@gmail.com\" -f ~/.ssh/id_ed25519_imtiazlorgat -N \"\")",
+      "Bash(ssh-keygen -t ed25519 -C \"imtiaz.lorgat.aus@gmail.com\" -f ~/.ssh/id_ed25519_imtiazlorgat_aus -N \"\")",
+      "Bash(git remote *)",
+      "PowerShell(icacls \"C:\\\\Users\\\\imtia\\\\.ssh\\\\config\" 2>&1)"
     ]
   }
 }
