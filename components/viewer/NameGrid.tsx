@@ -63,8 +63,8 @@ export function NameGrid({
   const effectivePage = perPage === namesPerPage ? currentPage : 1;
 
   // Auto-flip the page to wherever the audio's current name lives.
-  // This bypasses the user-driven setCurrentPage path entirely so
-  // there's no risk of stopping the audio that's driving the change.
+  // Bypasses the user-driven setCurrentPage path so there's no risk
+  // of stopping the audio that's driving the change.
   const handleActiveNameChange = (nameId: number | null) => {
     if (nameId === null) return;
     const index = names.findIndex((n) => n.id === nameId);
@@ -86,8 +86,6 @@ export function NameGrid({
 
   // Keep a live ref to the audio controls so handlers below always
   // see the current state without needing audio in their dep arrays.
-  // (audio's identity changes on every render, which would invalidate
-  // memoised handlers and create stale-closure bugs.)
   const audioRef = useRef(audio);
   useEffect(() => {
     audioRef.current = audio;
@@ -111,6 +109,21 @@ export function NameGrid({
       // Jump to page 1 so the user sees name #1 highlighted, then play.
       setPagination({ currentPage: 1, perPage: namesPerPage });
       audioRef.current.playAll();
+    }
+  };
+
+  // Per-panel speaker button — play just this one name.
+  // If audio is already playing (any mode) and the user taps the
+  // speaker on the currently-active name, stop. Otherwise, switch
+  // to single-name playback for the tapped name.
+  const handlePlayOne = (nameId: number) => {
+    if (
+      audioRef.current.isPlaying &&
+      audioRef.current.activeNameId === nameId
+    ) {
+      audioRef.current.stop();
+    } else {
+      audioRef.current.playOne(nameId);
     }
   };
 
@@ -142,11 +155,10 @@ export function NameGrid({
     return names.slice(start, start + namesPerPage);
   }, [names, effectivePage, namesPerPage]);
 
-  // Before hydration, we render with default settings. That's fine for
-  // the panels themselves (they just show defaults briefly), but the
-  // page indicator could flash "Page 1 of 17" then "Page 1 of 9" if
-  // the persisted namesPerPage differs. Suppress the indicator's
-  // transition by keying on hydration state.
+  // Only pass onPlay to panels when a recitation exists. NamePanel
+  // hides the speaker button when onPlay is undefined.
+  const onPanelPlay = recitation ? handlePlayOne : undefined;
+
   return (
     <div className="flex flex-col gap-6">
       <WelcomeToast />
@@ -162,6 +174,7 @@ export function NameGrid({
             translationDirection={translationDirection}
             transliterationDirection={transliterationDirection}
             isActive={audio.activeNameId === name.id}
+            onPlay={onPanelPlay}
           />
         ))}
       </div>
@@ -186,7 +199,7 @@ export function NameGrid({
             className={
               audio.isPlaying
                 ? "bg-gray-100 dark:bg-gray-900 hover:bg-gray-300 hover:dark:bg-gray-800"
-                : ""
+                : " hover:bg-gray-300 hover:dark:bg-gray-800"
             }
           >
             {audio.isPlaying ? (

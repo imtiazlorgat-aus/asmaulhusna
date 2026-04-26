@@ -1,5 +1,6 @@
 'use client';
 
+import { Volume2 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import {
   useShowTransliteration,
@@ -27,13 +28,18 @@ interface NamePanelProps {
    * hook.
    */
   isActive?: boolean;
+  /**
+   * Optional handler for the per-panel speaker button. When omitted,
+   * the speaker button is hidden (e.g., when no recitation is loaded).
+   */
+  onPlay?: (nameId: number) => void;
 }
 
 /**
  * A single card displaying one of the 99 names.
  *
  * Layout (top to bottom):
- *   - Sequence number in the corner
+ *   - Top row: sequence number on the left, speaker icon on the right
  *   - Arabic name (always shown, Uthmanic font)
  *   - Transliteration (if enabled)
  *   - Translation (if enabled)
@@ -46,6 +52,7 @@ export function NamePanel({
   translationDirection = 'ltr',
   transliterationDirection = 'ltr',
   isActive = false,
+  onPlay,
 }: NamePanelProps) {
   const showTransliteration = useShowTransliteration();
   const showTranslation = useShowTranslation();
@@ -78,12 +85,36 @@ export function NamePanel({
         <div className="absolute inset-0 bg-background/75" aria-hidden="true" />
       )}
 
-      {/* Content sits above the overlay */}
-      <div className="relative flex w-full flex-col items-center gap-4">
+      {/* Top row: sequence number left, speaker right (when audio available).
+          Sits above the main content stack. */}
+      <div className="relative flex w-full items-center justify-between">
         <span className="text-xs font-medium text-muted-foreground">
           {name.sequence}
         </span>
+        {onPlay && (
+          <button
+            type="button"
+            onClick={(e) => {
+              // Stop swipe handlers on the parent grid from interpreting
+              // the tap as a swipe gesture.
+              e.stopPropagation();
+              onPlay(name.id);
+            }}
+            aria-label={`Play ${name.transliteration ?? `name ${name.sequence}`}`}
+            className={cn(
+              'inline-flex h-7 w-7 items-center justify-center rounded-md transition-colors',
+              'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+              isActive && 'bg-primary/10 text-primary hover:bg-primary/15 hover:text-primary',
+            )}
+          >
+            <Volume2 className="h-4 w-4" />
+          </button>
+        )}
+      </div>
 
+      {/* Content sits above the overlay */}
+      <div className="relative flex w-full flex-col items-center gap-4">
         <h2
           dir="rtl"
           lang="ar"

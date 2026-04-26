@@ -19,22 +19,27 @@ interface UseAudioPlaybackReturn {
   isPlaying: boolean;
   /** The active name id (1..99), or null when not playing. */
   activeNameId: number | null;
-  /** Start playing from name #1. */
+  /** Start playing from name #1, continue through to the end. */
   playAll: () => void;
+  /**
+   * Play a single name by id, then stop automatically when its end_ms
+   * is reached. If audio is already playing (in any mode), it switches
+   * to play just this name.
+   */
+  playOne: (nameId: number) => void;
   /** Stop playback. */
   stop: () => void;
 }
 
 /**
- * Manages audio playback for a single recitation, coordinating with
- * the visual UI via the `onActiveNameChange` callback.
+ * Manages audio playback for a single recitation.
  *
- * Why a hook rather than putting the audio element in JSX directly:
- *   - The audio element lives across re-renders and page changes
- *     within a session. A hook keeps it tied to component lifetime
- *     without the complications of refs in JSX.
- *   - We want a single shared element, not per-panel elements.
- *   - The state (isPlaying, activeNameId) is what components render.
+ * Supports two playback modes:
+ *   - "all": plays from name #1 through to the audio's natural end
+ *   - "one": plays a single name, stopping at its end_ms boundary
+ *
+ * Mode is tracked internally so the timeupdate listener knows whether
+ * to stop at a boundary or let playback continue.
  */
 export function useAudioPlayback({
   audioUrl,
@@ -45,14 +50,17 @@ export function useAudioPlayback({
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeNameId, setActiveNameId] = useState<number | null>(null);
 
-  // Keep callbacks in a ref so the effect below doesn't re-run when
-  // they change. The effect should only set up the audio element once.
+  // When set, playback stops as soon as currentTime crosses this mark.
+  // Used by playOne to stop at the name's end_ms. Null in playAll mode.
+  const stopAtMsRef = useRef<number | null>(null);
+
+  // Keep callback in a ref so the audio-setup effect doesn't re-run.
   const onActiveNameChangeRef = useRef(onActiveNameChange);
   useEffect(() => {
     onActiveNameChangeRef.current = onActiveNameChange;
   }, [onActiveNameChange]);
 
-  // Sort timings by start_ms once; we rely on this order for lookups.
+  // Sort timings by start_ms; we rely on this for the active-name lookup.
   const sortedTimings = useRef(
     [...timings].sort((a, b) => a.start_ms - b.start_ms),
   );
@@ -60,9 +68,7 @@ export function useAudioPlayback({
     sortedTimings.current = [...timings].sort((a, b) => a.start_ms - b.start_ms);
   }, [timings]);
 
-  // Lazy-create the audio element on first use rather than on mount.
-  // Avoids the browser starting to download the audio file before the
-  // user has shown intent to play.
+  // Lazy-create the audio element on first use.
   const ensureAudio = useCallback((): HTMLAudioElement => {
     if (audioRef.current) return audioRef.current;
 
@@ -73,6 +79,19 @@ export function useAudioPlayback({
 
     audio.addEventListener('timeupdate', () => {
       const currentMs = audio.currentTime * 1000;
+
+      // playOne mode: stop when we cross the end-of-name boundary.
+      if (stopAtMsRef.current !== null && currentMs >= stopAtMsRef.current) {
+        audio.pause();
+        audio.currentTime = 0;
+        stopAtMsRef.current = null;
+        setIsPlaying(false);
+        setActiveNameId(null);
+        onActiveNameChangeRef.current?.(null);
+        return;
+      }
+
+      // Track active name for highlighting + page auto-flip.
       const nameId = findActiveName(sortedTimings.current, currentMs);
       setActiveNameId((prev) => {
         if (prev === nameId) return prev;
@@ -82,15 +101,14 @@ export function useAudioPlayback({
     });
 
     audio.addEventListener('ended', () => {
+      stopAtMsRef.current = null;
       setIsPlaying(false);
       setActiveNameId(null);
       onActiveNameChangeRef.current?.(null);
     });
 
     audio.addEventListener('pause', () => {
-      // Distinguish between "ended" pause (handled above) and explicit
-      // user/programmatic pause. If currentTime is at the end, ended
-      // already fired; otherwise it's a real pause.
+      // Distinguish "ended" pause from explicit pause.
       if (audio.currentTime < audio.duration) {
         setIsPlaying(false);
       }
@@ -98,6 +116,7 @@ export function useAudioPlayback({
 
     audio.addEventListener('error', (e) => {
       console.error('Audio playback error', e);
+      stopAtMsRef.current = null;
       setIsPlaying(false);
       setActiveNameId(null);
       onActiveNameChangeRef.current?.(null);
@@ -108,10 +127,11 @@ export function useAudioPlayback({
 
   const playAll = useCallback(() => {
     const audio = ensureAudio();
-    // Always start from the first timing's start_ms (typically name #1).
+    stopAtMsRef.current = null;
     const firstStart = sortedTimings.current[0]?.start_ms ?? 0;
     audio.currentTime = firstStart / 1000;
-    audio.play()
+    audio
+      .play()
       .then(() => setIsPlaying(true))
       .catch((err) => {
         console.error('Audio play failed', err);
@@ -119,17 +139,43 @@ export function useAudioPlayback({
       });
   }, [ensureAudio]);
 
+  const playOne = useCallback(
+    (nameId: number) => {
+      const timing = sortedTimings.current.find((t) => t.name_id === nameId);
+      if (!timing) {
+        console.warn(`No timing found for name id ${nameId}`);
+        return;
+      }
+      const audio = ensureAudio();
+      stopAtMsRef.current = timing.end_ms;
+      audio.currentTime = timing.start_ms / 1000;
+      audio
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+          setActiveNameId(nameId);
+          onActiveNameChangeRef.current?.(nameId);
+        })
+        .catch((err) => {
+          console.error('Audio play failed', err);
+          setIsPlaying(false);
+        });
+    },
+    [ensureAudio],
+  );
+
   const stop = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
     audio.pause();
     audio.currentTime = 0;
+    stopAtMsRef.current = null;
     setIsPlaying(false);
     setActiveNameId(null);
     onActiveNameChangeRef.current?.(null);
   }, []);
 
-  // Clean up audio element when the component unmounts.
+  // Clean up audio element on unmount.
   useEffect(() => {
     return () => {
       const audio = audioRef.current;
@@ -140,16 +186,9 @@ export function useAudioPlayback({
     };
   }, []);
 
-  return { isPlaying, activeNameId, playAll, stop };
+  return { isPlaying, activeNameId, playAll, playOne, stop };
 }
 
-/**
- * Find which name corresponds to the given playback position.
- * Returns the name_id, or null if currentMs falls outside any timing.
- *
- * Linear scan is fine for 99 entries — far simpler than binary search
- * and doesn't appear in any hot path that would justify the complexity.
- */
 function findActiveName(
   timings: RecitationTiming[],
   currentMs: number,
