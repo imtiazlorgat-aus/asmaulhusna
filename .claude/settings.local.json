@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(npx tsc *)",
-      "Bash(node -e \"const l = require\\('lucide-react'\\); ['Eye','EyeOff','Type','Globe','Languages','GlobeOff','ALargeSmall','CaseSensitive','Captions','CaptionsOff','Baseline','WholeWord'].forEach\\(n => console.log\\(n, n in l ? 'OK' : 'MISSING'\\)\\);\")"
+      "Bash(node -e \"const l = require\\('lucide-react'\\); ['Eye','EyeOff','Type','Globe','Languages','GlobeOff','ALargeSmall','CaseSensitive','Captions','CaptionsOff','Baseline','WholeWord'].forEach\\(n => console.log\\(n, n in l ? 'OK' : 'MISSING'\\)\\);\")",
+      "Bash(npm install *)",
+      "Bash(node -e \"require\\('sonner'\\)\")",
+      "Bash(pnpm add *)",
+      "Bash(node -e \"const r = require\\('radix-ui'\\); console.log\\(Object.keys\\(r\\).filter\\(k => k.toLowerCase\\(\\).includes\\('switch'\\)\\)\\)\")",
+      "Bash(node -e \"const { Switch } = require\\('radix-ui'\\); console.log\\(Object.keys\\(Switch\\)\\)\")",
+      "Bash(node -e ' *)"
     ]
   }
 }

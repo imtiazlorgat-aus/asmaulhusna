@@ -27,6 +27,13 @@ export interface Settings {
   // Background image: null for no image, a string for a preset key
   // or a full URL. The component decides how to render either case.
   backgroundImageUrl: string | null;
+
+  // Swipe gestures for page navigation
+  swipeUpDown: boolean;
+  swipeLeftRight: boolean;
+
+  // First-visit flag — used to show the welcome toast once
+  hasSeenWelcome: boolean;
 }
 
 /**
@@ -43,6 +50,9 @@ export const DEFAULT_SETTINGS: Settings = {
   transliterationFontSize: 18,
   translationFontSize: 16,
   backgroundImageUrl: null,
+  swipeUpDown: true,
+  swipeLeftRight: false,
+  hasSeenWelcome: false,
 };
 
 /**
@@ -105,12 +115,24 @@ export const useSettings = create<SettingsState>()(
         transliterationFontSize: state.transliterationFontSize,
         translationFontSize: state.translationFontSize,
         backgroundImageUrl: state.backgroundImageUrl,
+        swipeUpDown: state.swipeUpDown,
+        swipeLeftRight: state.swipeLeftRight,
+        hasSeenWelcome: state.hasSeenWelcome,
       }),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },
-      // If we ever change the settings shape, bump this and handle migration.
-      version: 1,
+      migrate: (persisted: unknown, version: number) => {
+        const s = persisted as Partial<Settings>;
+        if (version < 2) {
+          // swipeUpDown was added in v2 — default it on for existing users.
+          if (s.swipeUpDown === undefined) s.swipeUpDown = true;
+          if (s.swipeLeftRight === undefined) s.swipeLeftRight = false;
+          if (s.hasSeenWelcome === undefined) s.hasSeenWelcome = false;
+        }
+        return s;
+      },
+      version: 2,
     },
   ),
 );

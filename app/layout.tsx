@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { uthmanic } from "@/lib/fonts/uthmanic";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { Footer } from "@/components/layout/Footer";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const SITE_URL = "https://asmaulhusna.co.za";
@@ -85,6 +86,7 @@ export default function RootLayout({
             <div className="flex-1">{children}</div>
             <Footer />
           </div>
+          <Toaster position="bottom-center" richColors />
         </ThemeProvider>
       </body>
     </html>

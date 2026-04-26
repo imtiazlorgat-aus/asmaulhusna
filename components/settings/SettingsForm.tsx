@@ -8,6 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { FontSizeSlider } from "./FontSizeSlider";
 import { LanguageSelect } from "./LanguageSelect";
 import { BackgroundImagePicker } from "./BackgroundImagePicker";
+import { Switch } from "@/components/ui/switch";
 import { NamePanel } from "@/components/viewer/NamePanel";
 import { useSettings, SETTINGS_BOUNDS } from "@/lib/store/settings-store";
 import type { LanguageRow, NameWithTranslations } from "@/lib/db/types";
@@ -35,6 +36,8 @@ export function SettingsForm({
 
   // Subscribe to each field individually so we only re-render on real changes.
   const namesPerPage = useSettings((s) => s.namesPerPage);
+  const swipeUpDown = useSettings((s) => s.swipeUpDown);
+  const swipeLeftRight = useSettings((s) => s.swipeLeftRight);
   const transliterationLanguage = useSettings((s) => s.transliterationLanguage);
   const arabicFontSize = useSettings((s) => s.arabicFontSize);
   const transliterationFontSize = useSettings((s) => s.transliterationFontSize);
@@ -76,6 +79,29 @@ export function SettingsForm({
                 max={SETTINGS_BOUNDS.namesPerPage.max}
                 step={SETTINGS_BOUNDS.namesPerPage.step}
                 onValueChange={(v) => update({ namesPerPage: v[0] })}
+              />
+            </div>
+          </div>
+        </Card>
+
+        {/* Swipe navigation */}
+        <Card className="p-6">
+          <h2 className="mb-4 text-lg font-semibold">Swipe navigation</h2>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="swipe-up-down">Swipe up / down</Label>
+              <Switch
+                id="swipe-up-down"
+                checked={swipeUpDown}
+                onCheckedChange={(v) => update({ swipeUpDown: v })}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="swipe-left-right">Swipe left / right</Label>
+              <Switch
+                id="swipe-left-right"
+                checked={swipeLeftRight}
+                onCheckedChange={(v) => update({ swipeLeftRight: v })}
               />
             </div>
           </div>

@@ -1,19 +1,20 @@
-'use client';
+"use client";
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { NamePanel } from './NamePanel';
-import { PaginationControls } from './PaginationControls';
-import { VisibilityToggles } from './VisibilityToggles';
-import { useSettings } from '@/lib/store/settings-store';
-import type { NameWithTranslations } from '@/lib/db/types';
+import { useMemo, useRef, useState } from "react";
+import { NamePanel } from "./NamePanel";
+import { PaginationControls } from "./PaginationControls";
+import { VisibilityToggles } from "./VisibilityToggles";
+import { useSettings } from "@/lib/store/settings-store";
+import { WelcomeToast } from "./WelcomeToast";
+import type { NameWithTranslations } from "@/lib/db/types";
 
 interface NameGridProps {
   /** All 99 names with translations for the chosen language pair. */
   names: NameWithTranslations[];
   /** Direction of the translation language (from `languages.direction`). */
-  translationDirection?: 'ltr' | 'rtl';
+  translationDirection?: "ltr" | "rtl";
   /** Direction of the transliteration language (usually 'ltr'). */
-  transliterationDirection?: 'ltr' | 'rtl';
+  transliterationDirection?: "ltr" | "rtl";
 }
 
 /**
@@ -31,14 +32,25 @@ interface NameGridProps {
  */
 export function NameGrid({
   names,
-  translationDirection = 'ltr',
-  transliterationDirection = 'ltr',
+  translationDirection = "ltr",
+  transliterationDirection = "ltr",
 }: NameGridProps) {
   const namesPerPage = useSettings((s) => s.namesPerPage);
-  const hasHydrated = useSettings((s) => s.hasHydrated);
+  const swipeUpDown = useSettings((s) => s.swipeUpDown);
+  const swipeLeftRight = useSettings((s) => s.swipeLeftRight);
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [{ currentPage, perPage }, setPagination] = useState({
+    currentPage: 1,
+    perPage: namesPerPage,
+  });
   const touchStart = useRef<{ x: number; y: number } | null>(null);
+
+  const effectivePage = perPage === namesPerPage ? currentPage : 1;
+  const setCurrentPage = (page: number | ((p: number) => number)) =>
+    setPagination((prev) => ({
+      currentPage: typeof page === "function" ? page(prev.currentPage) : page,
+      perPage: namesPerPage,
+    }));
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -51,12 +63,10 @@ export function NameGrid({
     touchStart.current = null;
     const absDx = Math.abs(dx);
     const absDy = Math.abs(dy);
-    if (absDx >= 50 && absDx >= absDy) {
-      // Horizontal: left → next, right → previous
+    if (swipeLeftRight && absDx >= 50 && absDx >= absDy) {
       if (dx < 0) setCurrentPage((p) => Math.min(totalPages, p + 1));
       else setCurrentPage((p) => Math.max(1, p - 1));
-    } else if (absDy >= 50 && absDy > absDx) {
-      // Vertical: up → next (same as left), down → previous (same as right)
+    } else if (swipeUpDown && absDy >= 50 && absDy > absDx) {
       if (dy < 0) setCurrentPage((p) => Math.min(totalPages, p + 1));
       else setCurrentPage((p) => Math.max(1, p - 1));
     }
@@ -65,17 +75,10 @@ export function NameGrid({
   // Derive totals from the current slice size.
   const totalPages = Math.max(1, Math.ceil(names.length / namesPerPage));
 
-  // Reset to page 1 whenever the slice size changes. Also guards
-  // against currentPage exceeding totalPages after a hydration swap
-  // from default namesPerPage to a smaller persisted value.
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [namesPerPage]);
-
   const visibleNames = useMemo(() => {
-    const start = (currentPage - 1) * namesPerPage;
+    const start = (effectivePage - 1) * namesPerPage;
     return names.slice(start, start + namesPerPage);
-  }, [names, currentPage, namesPerPage]);
+  }, [names, effectivePage, namesPerPage]);
 
   // Before hydration, we render with default settings. That's fine for
   // the panels themselves (they just show defaults briefly), but the
@@ -84,6 +87,7 @@ export function NameGrid({
   // transition by keying on hydration state.
   return (
     <div className="flex flex-col gap-6">
+      <WelcomeToast />
       <div
         className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
         onTouchStart={handleTouchStart}
@@ -100,7 +104,7 @@ export function NameGrid({
       </div>
 
       <PaginationControls
-        currentPage={currentPage}
+        currentPage={effectivePage}
         totalPages={totalPages}
         onFirst={() => setCurrentPage(1)}
         onPrevious={() => setCurrentPage((p) => Math.max(1, p - 1))}
