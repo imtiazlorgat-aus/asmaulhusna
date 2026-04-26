@@ -1,12 +1,15 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Headphones, Square } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { NamePanel } from "./NamePanel";
 import { PaginationControls } from "./PaginationControls";
 import { VisibilityToggles } from "./VisibilityToggles";
 import { useSettings } from "@/lib/store/settings-store";
+import { useAudioPlayback } from "@/lib/audio/useAudioPlayback";
 import { WelcomeToast } from "./WelcomeToast";
-import type { NameWithTranslations } from "@/lib/db/types";
+import type { DefaultRecitation, NameWithTranslations } from "@/lib/db/types";
 
 interface NameGridProps {
   /** All 99 names with translations for the chosen language pair. */
@@ -15,6 +18,11 @@ interface NameGridProps {
   translationDirection?: "ltr" | "rtl";
   /** Direction of the transliteration language (usually 'ltr'). */
   transliterationDirection?: "ltr" | "rtl";
+  /**
+   * Default recitation data. When null/undefined, the Listen button is
+   * hidden — viewer still works as a read-only experience.
+   */
+  recitation?: DefaultRecitation | null;
 }
 
 /**
@@ -25,15 +33,22 @@ interface NameGridProps {
  *   - Reads `namesPerPage` from the settings store
  *   - Slices `names` by the current page window
  *   - Renders toggles, the grid, and pagination controls
+ *   - Drives audio playback when a recitation is provided
  *
  * If `namesPerPage` changes (e.g., the user bumps it up in settings),
  * we reset to page 1 rather than trying to keep the user on a page
  * that may no longer exist.
+ *
+ * Audio coordination: when audio plays, the active name advances
+ * through 1..99 and we auto-flip pages to keep the active panel
+ * visible. User-driven page changes (pagination buttons or swipe)
+ * stop audio; audio-driven page changes don't.
  */
 export function NameGrid({
   names,
   translationDirection = "ltr",
   transliterationDirection = "ltr",
+  recitation,
 }: NameGridProps) {
   const namesPerPage = useSettings((s) => s.namesPerPage);
   const swipeUpDown = useSettings((s) => s.swipeUpDown);
@@ -46,11 +61,58 @@ export function NameGrid({
   const touchStart = useRef<{ x: number; y: number } | null>(null);
 
   const effectivePage = perPage === namesPerPage ? currentPage : 1;
-  const setCurrentPage = (page: number | ((p: number) => number)) =>
+
+  // Auto-flip the page to wherever the audio's current name lives.
+  // This bypasses the user-driven setCurrentPage path entirely so
+  // there's no risk of stopping the audio that's driving the change.
+  const handleActiveNameChange = (nameId: number | null) => {
+    if (nameId === null) return;
+    const index = names.findIndex((n) => n.id === nameId);
+    if (index === -1) return;
+    const requiredPage = Math.floor(index / namesPerPage) + 1;
+    setPagination((prev) => {
+      if (prev.currentPage === requiredPage && prev.perPage === namesPerPage) {
+        return prev;
+      }
+      return { currentPage: requiredPage, perPage: namesPerPage };
+    });
+  };
+
+  const audio = useAudioPlayback({
+    audioUrl: recitation?.recitation.audio_url ?? "",
+    timings: recitation?.timings ?? [],
+    onActiveNameChange: handleActiveNameChange,
+  });
+
+  // Keep a live ref to the audio controls so handlers below always
+  // see the current state without needing audio in their dep arrays.
+  // (audio's identity changes on every render, which would invalidate
+  // memoised handlers and create stale-closure bugs.)
+  const audioRef = useRef(audio);
+  useEffect(() => {
+    audioRef.current = audio;
+  });
+
+  // User-driven page change. Stops audio if it's playing.
+  const setCurrentPage = (page: number | ((p: number) => number)) => {
+    if (audioRef.current.isPlaying) {
+      audioRef.current.stop();
+    }
     setPagination((prev) => ({
       currentPage: typeof page === "function" ? page(prev.currentPage) : page,
       perPage: namesPerPage,
     }));
+  };
+
+  const handleListenClick = () => {
+    if (audioRef.current.isPlaying) {
+      audioRef.current.stop();
+    } else {
+      // Jump to page 1 so the user sees name #1 highlighted, then play.
+      setPagination({ currentPage: 1, perPage: namesPerPage });
+      audioRef.current.playAll();
+    }
+  };
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -99,6 +161,7 @@ export function NameGrid({
             name={name}
             translationDirection={translationDirection}
             transliterationDirection={transliterationDirection}
+            isActive={audio.activeNameId === name.id}
           />
         ))}
       </div>
@@ -112,7 +175,33 @@ export function NameGrid({
         onLast={() => setCurrentPage(totalPages)}
       />
 
-      <div className="flex justify-center">
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        {recitation && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleListenClick}
+            aria-label={audio.isPlaying ? "Stop" : "Listen"}
+            aria-pressed={audio.isPlaying}
+            className={
+              audio.isPlaying
+                ? "bg-gray-100 dark:bg-gray-900 hover:bg-gray-300 hover:dark:bg-gray-800"
+                : ""
+            }
+          >
+            {audio.isPlaying ? (
+              <>
+                <Square className="h-4 w-4" />
+                Stop
+              </>
+            ) : (
+              <>
+                <Headphones className="h-4 w-4" />
+                Listen
+              </>
+            )}
+          </Button>
+        )}
         <VisibilityToggles />
       </div>
     </div>

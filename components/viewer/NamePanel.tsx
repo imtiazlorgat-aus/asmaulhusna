@@ -6,6 +6,7 @@ import {
   useShowTranslation,
   useSettings,
 } from '@/lib/store/settings-store';
+import { cn } from '@/lib/utils';
 import type { NameWithTranslations } from '@/lib/db/types';
 
 interface NamePanelProps {
@@ -20,6 +21,12 @@ interface NamePanelProps {
    * transliterations are Latin-script, but included for flexibility.
    */
   transliterationDirection?: 'ltr' | 'rtl';
+  /**
+   * When true, this panel is the currently-recited name. Adds a
+   * highlighted ring. Coordinated by the parent via the audio playback
+   * hook.
+   */
+  isActive?: boolean;
 }
 
 /**
@@ -38,6 +45,7 @@ export function NamePanel({
   name,
   translationDirection = 'ltr',
   transliterationDirection = 'ltr',
+  isActive = false,
 }: NamePanelProps) {
   const showTransliteration = useShowTransliteration();
   const showTranslation = useShowTranslation();
@@ -51,7 +59,10 @@ export function NamePanel({
 
   return (
     <Card
-      className="relative flex flex-col items-center justify-center gap-4 overflow-hidden p-6 text-center shadow-lg"
+      className={cn(
+        'relative flex flex-col items-center justify-center gap-4 overflow-hidden p-6 text-center shadow-lg transition-shadow duration-200',
+        isActive && 'ring-2 ring-primary ring-offset-2 ring-offset-background',
+      )}
       style={
         backgroundImageUrl
           ? {

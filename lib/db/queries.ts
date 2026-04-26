@@ -1,5 +1,10 @@
 import { sql } from './client';
-import type { LanguageRow, NameWithTranslations } from './types';
+import type {
+  DefaultRecitation,
+  LanguageRow,
+  NameWithTranslations,
+  RecitationRow,
+} from './types';
 
 /**
  * Fetch all active languages. Used by the settings page to populate
@@ -72,4 +77,58 @@ export async function getLanguagePairs(): Promise<
     }
   }
   return pairs;
+}
+
+/**
+ * Fetch the default recitation and its 99 timings. Returns null if no
+ * recitation is flagged default — viewer pages handle this gracefully
+ * by hiding the Listen button.
+ *
+ * One round-trip rather than two: we use a LEFT JOIN to pull the
+ * recitation and its timings together. The first row holds recitation
+ * metadata; all rows hold timing data.
+ */
+export async function getDefaultRecitation(): Promise<DefaultRecitation | null> {
+  const rows = await sql<
+    Array<RecitationRow & { name_id: number | null; start_ms: number | null; end_ms: number | null }>
+  >`
+    SELECT
+      r.id,
+      r.title,
+      r.reciter,
+      r.audio_url,
+      r.duration_ms,
+      r.license_note,
+      r.is_default,
+      t.name_id,
+      t.start_ms,
+      t.end_ms
+    FROM recitations r
+    LEFT JOIN recitation_timings t ON t.recitation_id = r.id
+    WHERE r.is_default = TRUE
+    ORDER BY t.name_id
+  `;
+
+  if (rows.length === 0) return null;
+
+  const first = rows[0];
+  const recitation: RecitationRow = {
+    id: first.id,
+    title: first.title,
+    reciter: first.reciter,
+    audio_url: first.audio_url,
+    duration_ms: first.duration_ms,
+    license_note: first.license_note,
+    is_default: first.is_default,
+  };
+
+  const timings = rows
+    .filter((r) => r.name_id !== null)
+    .map((r) => ({
+      name_id: r.name_id as number,
+      start_ms: r.start_ms as number,
+      end_ms: r.end_ms as number,
+    }));
+
+  return { recitation, timings };
 }

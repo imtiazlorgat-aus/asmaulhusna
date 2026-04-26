@@ -40,3 +40,36 @@ export interface NameWithTranslations {
   transliteration: string | null;
   translation: string | null;
 }
+
+/**
+ * A recitation's metadata. Audio file path, duration, and licence
+ * information.
+ */
+export interface RecitationRow {
+  id: number;
+  title: string;
+  reciter: string | null;
+  audio_url: string;
+  duration_ms: number;
+  license_note: string | null;
+  is_default: boolean;
+}
+
+/**
+ * A single name's start/end timestamps within a specific recitation,
+ * in milliseconds.
+ */
+export interface RecitationTiming {
+  name_id: number;
+  start_ms: number;
+  end_ms: number;
+}
+
+/**
+ * The default recitation plus its timings — one bundle the client
+ * needs to drive playback.
+ */
+export interface DefaultRecitation {
+  recitation: RecitationRow;
+  timings: RecitationTiming[];
+}

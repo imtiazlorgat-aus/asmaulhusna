@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Settings as SettingsIcon } from "lucide-react";
 import {
   getActiveLanguages,
+  getDefaultRecitation,
   getLanguagePairs,
   getNamesWithTranslations,
 } from "@/lib/db/queries";
@@ -68,7 +69,10 @@ export default async function ViewerPage({ params }: PageProps) {
     notFound();
   }
 
-  const names = await getNamesWithTranslations(translitLang, transLang);
+  const [names, recitation] = await Promise.all([
+    getNamesWithTranslations(translitLang, transLang),
+    getDefaultRecitation(),
+  ]);
 
   return (
     <main className="container mx-auto p-6">
@@ -99,6 +103,7 @@ export default async function ViewerPage({ params }: PageProps) {
       </div>
       <NameGrid
         names={names}
+        recitation={recitation}
         transliterationDirection={translit.direction}
         translationDirection={trans.direction}
       />
