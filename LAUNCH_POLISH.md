@@ -18,12 +18,12 @@ No new packages needed — everything uses what you already have.
 Four image files are referenced by `app/layout.tsx` and need to exist
 in `public/`:
 
-| File | Size | Used for |
-|------|------|----------|
-| `public/favicon.ico` | 32×32 | Browser tab icon |
-| `public/icon.png` | 32×32 | Modern PNG icon |
-| `public/apple-icon.png` | 180×180 | iOS home screen icon |
-| `public/og-image.png` | 1200×630 | Social share card |
+| File                            | Size     | Used for             |
+| ------------------------------- | -------- | -------------------- |
+| `public/favicon.ico`            | 32×32    | Browser tab icon     |
+| `public/icon.png`               | 32×32    | Modern PNG icon      |
+| `public/AsmaulHusnaLogo180.png` | 180×180  | iOS home screen icon |
+| `public/og-image.png`           | 1200×630 | Social share card    |
 
 For a quick start, [favicon.io](https://favicon.io/favicon-generator/)
 lets you generate the first three from text in a minute. Try "99" or
@@ -40,6 +40,7 @@ which looks unfinished. Worth doing before DNS cutover.
 For the social share card at `public/og-image.png`, a suggested design:
 
 **Composition:**
+
 - Centered Arabic text: the name "Ar-Rahman" (ٱلرَّحْمَٰنُ) in
   Uthmanic script, approximately 220px tall
 - Below in sans-serif, smaller (~60px): "Asmaul Husna"
@@ -47,6 +48,7 @@ For the social share card at `public/og-image.png`, a suggested design:
 - Optional subtle arabesque pattern in one corner
 
 **Colors matching your app:**
+
 - Background: `#09090b` (dark mode background)
 - Primary text: `#fafafa` (dark mode foreground)
 - Muted text: `#a1a1aa`
@@ -76,15 +78,15 @@ pnpm start
 
 Visit each page:
 
-| URL | Expected |
-|-----|----------|
-| `/` | Redirects to `/asmaul-husna` → `/asmaul-husna/en/en` |
-| `/asmaul-husna/en/en` | Viewer with footer showing About link |
-| `/about` | Attribution and disclaimer page |
-| `/asmaul-husna/settings` | Settings page |
-| `/xyz` | Custom 404 page with Arabic "٤٠٤" |
-| `/sitemap.xml` | XML listing 20 viewer URLs + `/about` |
-| `/robots.txt` | Allows all, disallows `/asmaul-husna/settings` |
+| URL                      | Expected                                             |
+| ------------------------ | ---------------------------------------------------- |
+| `/`                      | Redirects to `/asmaul-husna` → `/asmaul-husna/en/en` |
+| `/asmaul-husna/en/en`    | Viewer with footer showing About link                |
+| `/about`                 | Attribution and disclaimer page                      |
+| `/asmaul-husna/settings` | Settings page                                        |
+| `/xyz`                   | Custom 404 page with Arabic "٤٠٤"                    |
+| `/sitemap.xml`           | XML listing 20 viewer URLs + `/about`                |
+| `/robots.txt`            | Allows all, disallows `/asmaul-husna/settings`       |
 
 ## 5. Commit
 
