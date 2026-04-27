@@ -12,6 +12,9 @@ export function Footer() {
           <Link href="/about" className="hover:text-foreground">
             About
           </Link>
+          <Link href="/contact" className="hover:text-foreground">
+            Contact Us
+          </Link>
           <a
             href={YOUTUBE_URL}
             target="_blank"

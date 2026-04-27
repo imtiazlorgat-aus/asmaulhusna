@@ -38,9 +38,10 @@ export default function AboutPage() {
             means of drawing closer to Allah and understanding His attributes.
           </p>
           <p className="text-foreground/90">
-            This site offers a simple, focused interface for reading the names.
-            There are no accounts, no tracking of activity, and no advertising.
-            Your display preferences are stored only in your browser.
+            This site offers a simple, focused interface for reading and
+            listening to the names. There are no accounts, no tracking of
+            activity, and no advertising. Your display preferences are stored
+            only in your browser.
           </p>
         </section>
 
@@ -58,15 +59,13 @@ export default function AboutPage() {
           <h2 className="text-lg font-semibold">Translations and review</h2>
           <p className="text-foreground/90">
             Translating divine names across languages is a sensitive task. The
-            English renderings presented here are working drafts compiled from
+            renderings presented here are working drafts compiled from
             https://digitalislamicguide.com/99-names-of-allah/. They are
-            scheduled for review by a qualified scholar, and updates will be
-            made as feedback is received.
+            scheduled for review/* by a qualified scholar */, and updates will
+            be made as feedback is received.
           </p>
           <p className="text-foreground/90">
-            If you notice an error or have a suggestion, please reach out. Urdu,
-            Indonesian, and Malay translations are planned but not yet
-            available.
+            If you notice an error or have a suggestion, please reach out.
           </p>
         </section>
 

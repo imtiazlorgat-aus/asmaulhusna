@@ -16,7 +16,8 @@
       "Bash(ssh-keygen -t ed25519 -C \"imtiaz.lorgat@gmail.com\" -f ~/.ssh/id_ed25519_imtiazlorgat -N \"\")",
       "Bash(ssh-keygen -t ed25519 -C \"imtiaz.lorgat.aus@gmail.com\" -f ~/.ssh/id_ed25519_imtiazlorgat_aus -N \"\")",
       "Bash(git remote *)",
-      "PowerShell(icacls \"C:\\\\Users\\\\imtia\\\\.ssh\\\\config\" 2>&1)"
+      "PowerShell(icacls \"C:\\\\Users\\\\imtia\\\\.ssh\\\\config\" 2>&1)",
+      "Bash(node -e \"require\\('nodemailer'\\); console.log\\('nodemailer ok'\\)\")"
     ]
   }
 }
