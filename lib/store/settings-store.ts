@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 /**
  * User-facing settings for the Asmaul Husna viewer.
@@ -44,14 +44,14 @@ export const DEFAULT_SETTINGS: Settings = {
   namesPerPage: 3,
   showTransliteration: true,
   showTranslation: true,
-  transliterationLanguage: 'en',
-  translationLanguage: 'en',
+  transliterationLanguage: "en",
+  translationLanguage: "en",
   arabicFontSize: 48,
   transliterationFontSize: 18,
   translationFontSize: 16,
   backgroundImageUrl: null,
-  swipeUpDown: true,
-  swipeLeftRight: false,
+  swipeUpDown: false,
+  swipeLeftRight: true,
   hasSeenWelcome: false,
 };
 
@@ -60,10 +60,10 @@ export const DEFAULT_SETTINGS: Settings = {
  * any defensive clamping elsewhere stay in sync.
  */
 export const SETTINGS_BOUNDS = {
-  namesPerPage:              { min: 1,  max: 12, step: 1 },
-  arabicFontSize:            { min: 24, max: 96, step: 2 },
-  transliterationFontSize:   { min: 12, max: 36, step: 1 },
-  translationFontSize:       { min: 12, max: 32, step: 1 },
+  namesPerPage: { min: 1, max: 12, step: 1 },
+  arabicFontSize: { min: 24, max: 96, step: 2 },
+  transliterationFontSize: { min: 12, max: 36, step: 1 },
+  translationFontSize: { min: 12, max: 32, step: 1 },
 } as const;
 
 interface SettingsState extends Settings {
@@ -90,12 +90,12 @@ export const useSettings = create<SettingsState>()(
       reset: () => set({ ...DEFAULT_SETTINGS }),
     }),
     {
-      name: 'asmaulhusna-settings',
+      name: "asmaulhusna-settings",
       storage: createJSONStorage(() => {
         // Guard against SSR — persist middleware runs on the server during
         // the initial render. Returning a noop storage there is fine;
         // hydration will kick in on the client.
-        if (typeof window === 'undefined') {
+        if (typeof window === "undefined") {
           return {
             getItem: () => null,
             setItem: () => {},
@@ -126,8 +126,8 @@ export const useSettings = create<SettingsState>()(
         const s = persisted as Partial<Settings>;
         if (version < 2) {
           // swipeUpDown was added in v2 — default it on for existing users.
-          if (s.swipeUpDown === undefined) s.swipeUpDown = true;
-          if (s.swipeLeftRight === undefined) s.swipeLeftRight = false;
+          if (s.swipeUpDown === undefined) s.swipeUpDown = false;
+          if (s.swipeLeftRight === undefined) s.swipeLeftRight = true;
           if (s.hasSeenWelcome === undefined) s.hasSeenWelcome = false;
         }
         return s;
@@ -142,8 +142,9 @@ export const useSettings = create<SettingsState>()(
  * slices you care about. This avoids re-rendering a whole component
  * when an unrelated setting changes.
  */
-export const useNamesPerPage        = () => useSettings((s) => s.namesPerPage);
-export const useShowTransliteration = () => useSettings((s) => s.showTransliteration);
-export const useShowTranslation     = () => useSettings((s) => s.showTranslation);
-export const useArabicFontSize      = () => useSettings((s) => s.arabicFontSize);
-export const useHasHydrated         = () => useSettings((s) => s.hasHydrated);
+export const useNamesPerPage = () => useSettings((s) => s.namesPerPage);
+export const useShowTransliteration = () =>
+  useSettings((s) => s.showTransliteration);
+export const useShowTranslation = () => useSettings((s) => s.showTranslation);
+export const useArabicFontSize = () => useSettings((s) => s.arabicFontSize);
+export const useHasHydrated = () => useSettings((s) => s.hasHydrated);

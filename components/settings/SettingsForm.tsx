@@ -89,19 +89,19 @@ export function SettingsForm({
           <h2 className="mb-4 text-lg font-semibold">Swipe navigation</h2>
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
+              <Label htmlFor="swipe-left-right">Swipe right / left</Label>
+              <Switch
+                id="swipe-left-right"
+                checked={swipeLeftRight}
+                onCheckedChange={(v) => update({ swipeLeftRight: v })}
+              />
+            </div>
+            <div className="flex items-center justify-between">
               <Label htmlFor="swipe-up-down">Swipe up / down</Label>
               <Switch
                 id="swipe-up-down"
                 checked={swipeUpDown}
                 onCheckedChange={(v) => update({ swipeUpDown: v })}
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <Label htmlFor="swipe-left-right">Swipe left / right</Label>
-              <Switch
-                id="swipe-left-right"
-                checked={swipeLeftRight}
-                onCheckedChange={(v) => update({ swipeLeftRight: v })}
               />
             </div>
           </div>

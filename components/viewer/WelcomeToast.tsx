@@ -13,7 +13,7 @@ export function WelcomeToast() {
     if (!hasHydrated || hasSeenWelcome) return;
     toast("Welcome to Asma-ul-Husna", {
       description:
-        "Swipe up/down to browse pages. Swipe controls, language and display settings can be changed under Settings.",
+        "Swipe right/left to browse pages. Swipe controls, language and display settings can be changed under Settings.",
       duration: 8000,
     });
     update({ hasSeenWelcome: true });
