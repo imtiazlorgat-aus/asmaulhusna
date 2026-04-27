@@ -47,6 +47,7 @@ export function useAudioPlayback({
   onActiveNameChange,
 }: UseAudioPlaybackOptions): UseAudioPlaybackReturn {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const isDestroyedRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeNameId, setActiveNameId] = useState<number | null>(null);
 
@@ -83,7 +84,10 @@ export function useAudioPlayback({
       // playOne mode: stop when we cross the end-of-name boundary.
       if (stopAtMsRef.current !== null && currentMs >= stopAtMsRef.current) {
         audio.pause();
-        audio.currentTime = 0;
+        // Do NOT seek to 0 here — setting currentTime fires another timeupdate
+        // which (at ms 0) would match name #1 and re-highlight/re-page it.
+        // playAll/playOne always set currentTime before playing, so the reset
+        // is unnecessary.
         stopAtMsRef.current = null;
         setIsPlaying(false);
         setActiveNameId(null);
@@ -115,6 +119,7 @@ export function useAudioPlayback({
     });
 
     audio.addEventListener('error', (e) => {
+      if (isDestroyedRef.current) return;
       console.error('Audio playback error', e);
       stopAtMsRef.current = null;
       setIsPlaying(false);
@@ -168,7 +173,6 @@ export function useAudioPlayback({
     const audio = audioRef.current;
     if (!audio) return;
     audio.pause();
-    audio.currentTime = 0;
     stopAtMsRef.current = null;
     setIsPlaying(false);
     setActiveNameId(null);
@@ -180,6 +184,7 @@ export function useAudioPlayback({
     return () => {
       const audio = audioRef.current;
       if (!audio) return;
+      isDestroyedRef.current = true;
       audio.pause();
       audio.src = '';
       audioRef.current = null;
