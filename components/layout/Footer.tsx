@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Headphones } from 'lucide-react';
 
@@ -9,6 +10,13 @@ export function Footer() {
     <footer className="mt-12 border-t py-6 text-sm text-muted-foreground">
       <div className="container mx-auto flex flex-col items-center gap-3 px-6 sm:flex-row sm:justify-between">
         <nav className="flex items-center gap-4">
+          <Image
+            src="/AsmaulHusnaLogo.png"
+            alt="Asma-ul-Husna logo"
+            width={32}
+            height={32}
+            className="rounded-sm"
+          />
           <Link href="/about" className="hover:text-foreground">
             About
           </Link>
