@@ -1,14 +1,14 @@
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import type { Metadata } from 'next';
-import { Settings as SettingsIcon } from 'lucide-react';
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { Settings as SettingsIcon } from "lucide-react";
 import {
   getActiveLanguages,
   getLanguagePairs,
   getNamesWithTranslations,
-} from '@/lib/db/queries';
-import { NameGrid } from '@/components/viewer/NameGrid';
-import { Button } from '@/components/ui/button';
+} from "@/lib/db/queries";
+import { NameGrid } from "@/components/viewer/NameGrid";
+import { Button } from "@/components/ui/button";
 
 export const revalidate = 86400;
 
@@ -29,13 +29,13 @@ export async function generateMetadata({
   const trans = langs.find((l) => l.code === transLang);
 
   if (!translit || !trans) {
-    return { title: 'Asmaul Husna' };
+    return { title: "Asmaul Husna" };
   }
 
   return {
     title: `Asmaul Husna — ${translit.name} transliteration, ${trans.name} translation`,
     description:
-      'Read and reflect on the 99 Names of Allah in Arabic, with transliteration and translation.',
+      "Read and reflect on the 99 Names of Allah in Arabic, with transliteration and translation in multiple languages.",
   };
 }
 

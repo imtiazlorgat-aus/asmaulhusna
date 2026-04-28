@@ -1,47 +1,62 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Dialog as DialogPrimitive } from 'radix-ui';
-import { Share2, Copy, Check, Mail, MessageCircle, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { useState } from "react";
+import { Dialog as DialogPrimitive } from "radix-ui";
+import { Share2, Copy, Check, Mail, MessageCircle, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-const TITLE = 'Asma-ul-Husna — The 99 Names of Allah';
+const TITLE = "Asma-ul-Husna — The 99 Names of Allah";
 const DESCRIPTION =
-  'Read and reflect on the 99 Names of Allah in Arabic, with transliteration and translation.';
+  "Read and reflect on the 99 Names of Allah in Arabic, with transliteration and translation in multiple languages.";
 
 const XLogoIcon = () => (
-  <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="currentColor" aria-hidden>
+  <svg
+    viewBox="0 0 24 24"
+    className="h-4 w-4 shrink-0"
+    fill="currentColor"
+    aria-hidden
+  >
     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.262 5.632L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" />
   </svg>
 );
 
 const FacebookIcon = () => (
-  <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="currentColor" aria-hidden>
+  <svg
+    viewBox="0 0 24 24"
+    className="h-4 w-4 shrink-0"
+    fill="currentColor"
+    aria-hidden
+  >
     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
   </svg>
 );
 
 const WhatsAppIcon = () => (
-  <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="currentColor" aria-hidden>
+  <svg
+    viewBox="0 0 24 24"
+    className="h-4 w-4 shrink-0"
+    fill="currentColor"
+    aria-hidden
+  >
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
   </svg>
 );
 
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
 type ShareOption =
-  | { label: string; Icon: () => ReactNode; kind: 'button'; action: () => void }
-  | { label: string; Icon: () => ReactNode; kind: 'link'; href: () => string };
+  | { label: string; Icon: () => ReactNode; kind: "button"; action: () => void }
+  | { label: string; Icon: () => ReactNode; kind: "link"; href: () => string };
 
 const rowClass =
-  'flex w-full items-center gap-3 rounded-lg border border-border px-4 py-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
+  "flex w-full items-center gap-3 rounded-lg border border-border px-4 py-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 export function ShareButton() {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const url = () => (typeof window !== 'undefined' ? window.location.href : '');
+  const url = () => (typeof window !== "undefined" ? window.location.href : "");
 
   const copyLink = async () => {
     await navigator.clipboard.writeText(url());
@@ -51,41 +66,48 @@ export function ShareButton() {
 
   const options: ShareOption[] = [
     {
-      label: copied ? 'Copied!' : 'Copy link',
-      Icon: () => (copied ? <Check className="h-4 w-4 shrink-0" /> : <Copy className="h-4 w-4 shrink-0" />),
-      kind: 'button',
+      label: copied ? "Copied!" : "Copy link",
+      Icon: () =>
+        copied ? (
+          <Check className="h-4 w-4 shrink-0" />
+        ) : (
+          <Copy className="h-4 w-4 shrink-0" />
+        ),
+      kind: "button",
       action: copyLink,
     },
     {
-      label: 'WhatsApp',
+      label: "WhatsApp",
       Icon: WhatsAppIcon,
-      kind: 'link',
-      href: () => `https://wa.me/?text=${encodeURIComponent(`${TITLE}\n${url()}`)}`,
+      kind: "link",
+      href: () =>
+        `https://wa.me/?text=${encodeURIComponent(`${TITLE}\n${url()}`)}`,
     },
     {
-      label: 'X (Twitter)',
+      label: "X (Twitter)",
       Icon: XLogoIcon,
-      kind: 'link',
+      kind: "link",
       href: () =>
         `https://x.com/intent/tweet?url=${encodeURIComponent(url())}&text=${encodeURIComponent(TITLE)}`,
     },
     {
-      label: 'Facebook',
+      label: "Facebook",
       Icon: FacebookIcon,
-      kind: 'link',
-      href: () => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url())}`,
+      kind: "link",
+      href: () =>
+        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url())}`,
     },
     {
-      label: 'Email',
+      label: "Email",
       Icon: () => <Mail className="h-4 w-4 shrink-0" />,
-      kind: 'link',
+      kind: "link",
       href: () =>
         `mailto:?subject=${encodeURIComponent(TITLE)}&body=${encodeURIComponent(`${DESCRIPTION}\n\n${url()}`)}`,
     },
     {
-      label: 'Messages',
+      label: "Messages",
       Icon: () => <MessageCircle className="h-4 w-4 shrink-0" />,
-      kind: 'link',
+      kind: "link",
       href: () => `sms:?&body=${encodeURIComponent(`${TITLE} ${url()}`)}`,
     },
   ];
@@ -93,7 +115,12 @@ export function ShareButton() {
   return (
     <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
       <DialogPrimitive.Trigger asChild>
-        <Button variant="outline" size="icon" aria-label="Share this page" title="Share">
+        <Button
+          variant="outline"
+          size="icon"
+          aria-label="Share this page"
+          title="Share"
+        >
           <Share2 className="h-4 w-4" />
         </Button>
       </DialogPrimitive.Trigger>
@@ -102,11 +129,11 @@ export function ShareButton() {
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/50 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0" />
         <DialogPrimitive.Content
           className={cn(
-            'fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-sm',
-            '-translate-x-1/2 -translate-y-1/2',
-            'rounded-xl bg-popover p-6 text-popover-foreground shadow-xl ring-1 ring-foreground/10',
-            'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',
-            'data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
+            "fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-sm",
+            "-translate-x-1/2 -translate-y-1/2",
+            "rounded-xl bg-popover p-6 text-popover-foreground shadow-xl ring-1 ring-foreground/10",
+            "data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95",
+            "data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           )}
         >
           <div className="mb-5 flex items-start justify-between gap-4">
@@ -119,7 +146,12 @@ export function ShareButton() {
               </DialogPrimitive.Description>
             </div>
             <DialogPrimitive.Close asChild>
-              <Button variant="ghost" size="icon" className="-mr-2 -mt-1 shrink-0" aria-label="Close">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="-mr-2 -mt-1 shrink-0"
+                aria-label="Close"
+              >
                 <X className="h-4 w-4" />
               </Button>
             </DialogPrimitive.Close>
@@ -127,8 +159,12 @@ export function ShareButton() {
 
           <div className="flex flex-col gap-2">
             {options.map((opt) =>
-              opt.kind === 'button' ? (
-                <button key={opt.label} onClick={opt.action} className={rowClass}>
+              opt.kind === "button" ? (
+                <button
+                  key={opt.label}
+                  onClick={opt.action}
+                  className={rowClass}
+                >
                   <opt.Icon />
                   {opt.label}
                 </button>

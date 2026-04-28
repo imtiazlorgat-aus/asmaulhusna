@@ -36,7 +36,7 @@ export async function generateMetadata({
   }
 
   const title = "The 99 Names and Attributes of Allah (SWT)";
-  const description = `Read and reflect on the 99 Names of Allah in Arabic, with ${translit.name} transliteration and ${trans.name} translation.`;
+  const description = `Read and reflect on the 99 Names of Allah in Arabic, with transliteration and translation in multiple languages.`;
   const url = `/asmaul-husna/${translitLang}/${transLang}`;
 
   return {
