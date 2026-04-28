@@ -46,7 +46,7 @@ export const DEFAULT_SETTINGS: Settings = {
   showTranslation: true,
   transliterationLanguage: "en",
   translationLanguage: "en",
-  arabicFontSize: 48,
+  arabicFontSize: 54,
   transliterationFontSize: 18,
   translationFontSize: 16,
   backgroundImageUrl: null,

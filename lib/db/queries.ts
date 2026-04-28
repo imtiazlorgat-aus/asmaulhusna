@@ -12,7 +12,7 @@ import type {
  */
 export async function getActiveLanguages(): Promise<LanguageRow[]> {
   return sql<LanguageRow[]>`
-    SELECT code, name, direction, is_active
+    SELECT code, name, direction, is_active, countrycode
     FROM languages
     WHERE is_active = TRUE
     ORDER BY name

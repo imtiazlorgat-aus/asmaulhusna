@@ -10,6 +10,7 @@ export interface LanguageRow {
   name: string;
   direction: 'ltr' | 'rtl';
   is_active: boolean;
+  countrycode: string | null;
 }
 
 export interface NameRow {

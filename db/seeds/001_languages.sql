@@ -6,15 +6,19 @@
 
 BEGIN;
 
-INSERT INTO languages (code, name, direction, is_active) VALUES
-  ('ar', 'Arabic',     'rtl', TRUE),
-  ('en', 'English',    'ltr', TRUE),
-  ('ur', 'Urdu',       'rtl', TRUE),
-  ('id', 'Indonesian', 'ltr', TRUE),
-  ('ms', 'Malay',      'ltr', TRUE)
+INSERT INTO languages (code, name, direction, is_active, countrycode) VALUES
+  ('ar', 'Arabic',     'rtl', TRUE, 'SAU'),
+  ('en', 'English',    'ltr', TRUE, 'GBR'),
+  ('ur', 'Urdu',       'rtl', TRUE, 'PAK'),
+  ('id', 'Indonesian', 'ltr', TRUE, 'IDN'),
+  ('ms', 'Malay',      'ltr', TRUE, 'MYS'),
+  ('af', 'Afrikaans', 'ltr', TRUE, 'ZAF),
+  ('xa', 'Xhosa', 'ltr', TRUE, 'ZAF'),
+  ('zu)
 ON CONFLICT (code) DO UPDATE
-  SET name       = EXCLUDED.name,
-      direction  = EXCLUDED.direction,
-      is_active  = EXCLUDED.is_active;
+  SET name        = EXCLUDED.name,
+      direction   = EXCLUDED.direction,
+      is_active   = EXCLUDED.is_active,
+      countrycode = EXCLUDED.countrycode;
 
 COMMIT;

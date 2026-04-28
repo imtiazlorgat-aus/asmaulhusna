@@ -59,10 +59,17 @@ export default function AboutPage() {
           <h2 className="text-lg font-semibold">Translations and review</h2>
           <p className="text-foreground/90">
             Translating divine names across languages is a sensitive task. The
-            renderings presented here are working drafts compiled from
-            https://digitalislamicguide.com/99-names-of-allah/. They are
-            scheduled for review/* by a qualified scholar */, and updates will
-            be made as feedback is received.
+            renderings presented here are working drafts compiled from{" "}
+            <a
+              href="https://digitalislamicguide.com/99-names-of-allah/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-foreground"
+            >
+              DigitalIslamicGuide.com/99-names-of-allah
+            </a>
+            . They are scheduled for review, and updates will be made as
+            feedback is received.
           </p>
           <p className="text-foreground/90">
             If you notice an error or have a suggestion, please reach out.
@@ -77,18 +84,9 @@ export default function AboutPage() {
               published by the King Fahd Glorious Qur&apos;an Printing Complex.
             </li>
             <li>
-              Interface icons from{" "}
-              <a
-                href="https://lucide.dev"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-foreground"
-              >
-                Lucide
-              </a>
-              .
+              Translations: 99-names-of-allah, published on
+              DigitalIslamicGuide.com
             </li>
-            <li>Built with Next.js, Tailwind CSS, and shadcn/ui.</li>
           </ul>
         </section>
 
