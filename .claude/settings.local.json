@@ -18,7 +18,8 @@
       "Bash(git remote *)",
       "PowerShell(icacls \"C:\\\\Users\\\\imtia\\\\.ssh\\\\config\" 2>&1)",
       "Bash(node -e \"require\\('nodemailer'\\); console.log\\('nodemailer ok'\\)\")",
-      "Bash(xargs grep *)"
+      "Bash(xargs grep *)",
+      "Bash(xargs cat *)"
     ]
   }
 }
