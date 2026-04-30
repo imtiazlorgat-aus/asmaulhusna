@@ -9,5 +9,5 @@
  * sensible default.
  */
 export default function AsmaulHusnaIndexPage() {
-  redirect("/asmaul-husna/en");
+  redirect("https://asmaulhusna.co.za/asmaul-husna/en");
 }

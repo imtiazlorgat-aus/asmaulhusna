@@ -36,7 +36,7 @@ Two small changes:
 **Add the import:**
 
 ```typescript
-import { getDefaultRecitation } from '@/lib/db/queries';
+import { getDefaultRecitation } from "@/lib/db/queries";
 ```
 
 **Replace the `getNamesWithTranslations` call** with a parallel fetch:
@@ -114,7 +114,7 @@ psql $env:DATABASE_URL -c "SELECT COUNT(*) FROM recitation_timings;"
 pnpm dev
 ```
 
-Visit `localhost:3000/asmaul-husna/en/en`:
+Visit `localhost:3000/asmaul-husna/en`:
 
 - A "Listen" button appears in the bottom row, left of the
   Transliteration and Translation toggle buttons

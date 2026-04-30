@@ -78,15 +78,15 @@ pnpm start
 
 Visit each page:
 
-| URL                      | Expected                                             |
-| ------------------------ | ---------------------------------------------------- |
-| `/`                      | Redirects to `/asmaul-husna` → `/asmaul-husna/en/en` |
-| `/asmaul-husna/en/en`    | Viewer with footer showing About link                |
-| `/about`                 | Attribution and disclaimer page                      |
-| `/asmaul-husna/settings` | Settings page                                        |
-| `/xyz`                   | Custom 404 page with Arabic "٤٠٤"                    |
-| `/sitemap.xml`           | XML listing 20 viewer URLs + `/about`                |
-| `/robots.txt`            | Allows all, disallows `/asmaul-husna/settings`       |
+| URL                      | Expected                                          |
+| ------------------------ | ------------------------------------------------- |
+| `/`                      | Redirects to `/asmaul-husna` → `/asmaul-husna/en` |
+| `/asmaul-husna/en`       | Viewer with footer showing About link             |
+| `/about`                 | Attribution and disclaimer page                   |
+| `/asmaul-husna/settings` | Settings page                                     |
+| `/xyz`                   | Custom 404 page with Arabic "٤٠٤"                 |
+| `/sitemap.xml`           | XML listing 20 viewer URLs + `/about`             |
+| `/robots.txt`            | Allows all, disallows `/asmaul-husna/settings`    |
 
 ## 5. Commit
 
