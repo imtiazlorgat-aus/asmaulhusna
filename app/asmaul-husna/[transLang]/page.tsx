@@ -36,23 +36,22 @@ export async function generateMetadata({
     return { title: "Asma-ul-Husna" };
   }
 
-  const title = "The 99 Names and Attributes of Allah (SWT)";
+  const ogTitle = "The 99 Names and Attributes of Allah (SWT)";
   const description = `Read and reflect on the 99 Names of Allah in Arabic, with transliteration and translation in multiple languages.`;
   const url = `/asmaul-husna/${transLang}`;
 
   return {
-    title,
     description,
     openGraph: {
-      title,
+      title: ogTitle,
       description,
       url,
       type: "website",
-      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: title }],
+      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: ogTitle }],
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: ogTitle,
       description,
       images: ["/og-image.png"],
     },

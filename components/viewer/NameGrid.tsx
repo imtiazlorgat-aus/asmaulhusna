@@ -192,6 +192,7 @@ export function NameGrid({
         {recitation && (
           <Button
             variant="outline"
+            title="Arabic Audio"
             size="sm"
             onClick={handleListenClick}
             aria-label={audio.isPlaying ? "Stop" : "Listen"}

@@ -8,7 +8,7 @@ import "./globals.css";
 const SITE_URL = "https://asmaulhusna.co.za";
 const SITE_NAME = "Asmaul Husna";
 const SITE_DESCRIPTION =
-  "Read and reflect on the 99 Names of Allah in Arabic, with transliteration and translation in multiple languages.";
+  "Read and reflect on the 99 Names and Attributes of Allah (SWT) in Arabic, with transliteration and translation in multiple languages.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

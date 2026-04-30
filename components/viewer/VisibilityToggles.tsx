@@ -13,6 +13,7 @@ export function VisibilityToggles() {
     <div className="flex flex-wrap items-center justify-center gap-3">
       <Button
         variant="outline"
+        title="Show/Hide Transliteration"
         size="sm"
         className={
           showTransliteration
@@ -33,6 +34,7 @@ export function VisibilityToggles() {
 
       <Button
         variant="outline"
+        title="Show/Hide Translation"
         size="sm"
         className={
           showTranslation

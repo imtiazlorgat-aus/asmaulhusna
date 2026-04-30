@@ -32,10 +32,11 @@ export default function AboutPage() {
             <span className="font-uthmanic text-xl" dir="rtl" lang="ar">
               الأَسْمَاءُ الْحُسْنَى
             </span>
-            &nbsp;— the Most Beautiful Names — are the ninety-nine names of
-            Allah mentioned in the Quran and the hadith. Muslims have
+            &nbsp;— the Most Beautiful Names — are the <b>99 names of Allah</b>{" "}
+            (SWT) mentioned in the Quran and the hadith. Muslims have
             traditionally recited, reflected upon, and studied these names as a
-            means of drawing closer to Allah and understanding His attributes.
+            means of drawing closer to Allah (SWT) and understanding His
+            attributes.
           </p>
           <p className="text-foreground/90">
             This site offers a simple, focused interface for reading and
@@ -68,8 +69,7 @@ export default function AboutPage() {
             >
               DigitalIslamicGuide.com/99-names-of-allah
             </a>
-            . They are scheduled for review, and updates will be made as
-            feedback is received.
+            .
           </p>
           <p className="text-foreground/90">
             If you notice an error or have a suggestion, please reach out.
