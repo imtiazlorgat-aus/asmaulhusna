@@ -71,8 +71,13 @@ export default function AboutPage() {
             </a>
             .
           </p>
+          <p>
+            For English language only, additional information is extracted from
+            MyIslam.org.
+          </p>
           <p className="text-foreground/90">
-            If you notice an error or have a suggestion, please reach out.
+            If you notice errors or have any suggestions, please reach out via
+            the <span className="font-semibold">Contact Us</span> link below.
           </p>
         </section>
 
@@ -84,8 +89,42 @@ export default function AboutPage() {
               published by the King Fahd Glorious Qur&apos;an Printing Complex.
             </li>
             <li>
+              Quran Verses: Links will open the relevant verse from{" "}
+              <a
+                href="https://quran.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-foreground"
+              >
+                Quran.com
+              </a>{" "}
+              managed by Quran.Foundation.
+            </li>
+            <li>
               Translations: 99-names-of-allah, published on
               DigitalIslamicGuide.com
+            </li>
+            <li>
+              For English language only, additional information is extracted
+              from{" "}
+              <a
+                href="https://myislam.org/99-names-of-allah/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-foreground"
+              >
+                99-names-of-allah
+              </a>{" "}
+              and{" "}
+              <a
+                href="https://myislam.org/wp-content/uploads/2019/09/99-Names-of-Allah-E-Book.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-foreground"
+              >
+                99-Names-of-Allah-E-Book.pdf
+              </a>{" "}
+              published by MyIslam.org.
             </li>
           </ul>
         </section>
