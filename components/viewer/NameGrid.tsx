@@ -9,7 +9,7 @@ import { VisibilityToggles } from "./VisibilityToggles";
 import { useSettings } from "@/lib/store/settings-store";
 import { useAudioPlayback } from "@/lib/audio/useAudioPlayback";
 import { WelcomeToast } from "./WelcomeToast";
-import type { DefaultRecitation, NameWithTranslations } from "@/lib/db/types";
+import type { DefaultRecitation, NameWithTranslations, QuranRefRow } from "@/lib/db/types";
 
 interface NameGridProps {
   /** All 99 names with translations for the chosen language pair. */
@@ -23,6 +23,8 @@ interface NameGridProps {
    * hidden — viewer still works as a read-only experience.
    */
   recitation?: DefaultRecitation | null;
+  /** Quran refs keyed by name_id. Only populated for English; undefined hides all Links buttons. */
+  quranRefs?: Record<number, QuranRefRow>;
 }
 
 /**
@@ -49,6 +51,7 @@ export function NameGrid({
   translationDirection = "ltr",
   transliterationDirection = "ltr",
   recitation,
+  quranRefs,
 }: NameGridProps) {
   const namesPerPage = useSettings((s) => s.namesPerPage);
   const swipeUpDown = useSettings((s) => s.swipeUpDown);
@@ -175,6 +178,7 @@ export function NameGrid({
             transliterationDirection={transliterationDirection}
             isActive={audio.activeNameId === name.id}
             onPlay={onPanelPlay}
+            quranRef={quranRefs?.[name.id]}
           />
         ))}
       </div>

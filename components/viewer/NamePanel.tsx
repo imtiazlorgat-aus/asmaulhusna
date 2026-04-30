@@ -8,7 +8,8 @@ import {
   useSettings,
 } from '@/lib/store/settings-store';
 import { cn } from '@/lib/utils';
-import type { NameWithTranslations } from '@/lib/db/types';
+import type { NameWithTranslations, QuranRefRow } from '@/lib/db/types';
+import { QuranRefsDialog } from './QuranRefsDialog';
 
 interface NamePanelProps {
   name: NameWithTranslations;
@@ -33,6 +34,8 @@ interface NamePanelProps {
    * the speaker button is hidden (e.g., when no recitation is loaded).
    */
   onPlay?: (nameId: number) => void;
+  /** Quran reference data for this name. When provided, a Links button appears next to the transliteration. */
+  quranRef?: QuranRefRow;
 }
 
 /**
@@ -53,6 +56,7 @@ export function NamePanel({
   transliterationDirection = 'ltr',
   isActive = false,
   onPlay,
+  quranRef,
 }: NamePanelProps) {
   const showTransliteration = useShowTransliteration();
   const showTranslation = useShowTranslation();
@@ -125,13 +129,16 @@ export function NamePanel({
         </h2>
 
         {showTransliteration && name.transliteration && (
-          <p
-            dir={transliterationDirection}
-            className="italic text-muted-foreground"
-            style={{ fontSize: `${transliterationFontSize}px` }}
-          >
-            {name.transliteration}
-          </p>
+          <div className="flex items-center justify-center gap-2">
+            <p
+              dir={transliterationDirection}
+              className="italic text-muted-foreground"
+              style={{ fontSize: `${transliterationFontSize}px` }}
+            >
+              {name.transliteration}
+            </p>
+            {quranRef && <QuranRefsDialog quranRef={quranRef} />}
+          </div>
         )}
 
         {showTranslation && name.translation && (

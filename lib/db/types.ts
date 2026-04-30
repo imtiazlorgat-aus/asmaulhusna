@@ -66,6 +66,13 @@ export interface RecitationTiming {
   end_ms: number;
 }
 
+export interface QuranRefRow {
+  name_id: number;
+  transliteration: string;
+  qref: string | null;
+  details: string | null;
+}
+
 /**
  * The default recitation plus its timings — one bundle the client
  * needs to drive playback.

@@ -6,7 +6,9 @@ import {
   getActiveLanguages,
   getDefaultRecitation,
   getNamesWithTranslations,
+  getQuranRefs,
 } from "@/lib/db/queries";
+import type { QuranRefRow } from "@/lib/db/types";
 import { NameGrid } from "@/components/viewer/NameGrid";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
@@ -68,10 +70,15 @@ export default async function ViewerPage({ params }: PageProps) {
     notFound();
   }
 
-  const [names, recitation] = await Promise.all([
+  const [names, recitation, quranRefRows] = await Promise.all([
     getNamesWithTranslations(transLang, transLang),
     getDefaultRecitation(),
+    transLang === 'en' ? getQuranRefs() : Promise.resolve([] as QuranRefRow[]),
   ]);
+
+  const quranRefs = quranRefRows.length > 0
+    ? Object.fromEntries(quranRefRows.map((r) => [r.name_id, r]))
+    : undefined;
 
   return (
     <main className="container mx-auto p-6">
@@ -105,6 +112,7 @@ export default async function ViewerPage({ params }: PageProps) {
         recitation={recitation}
         transliterationDirection={lang.direction}
         translationDirection={lang.direction}
+        quranRefs={quranRefs}
       />
     </main>
   );

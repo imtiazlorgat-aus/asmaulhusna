@@ -3,6 +3,7 @@ import type {
   DefaultRecitation,
   LanguageRow,
   NameWithTranslations,
+  QuranRefRow,
   RecitationRow,
 } from './types';
 
@@ -77,6 +78,17 @@ export async function getLanguagePairs(): Promise<
     }
   }
   return pairs;
+}
+
+/**
+ * Fetch all Quran reference rows. Data currently exists for English only.
+ */
+export async function getQuranRefs(): Promise<QuranRefRow[]> {
+  return sql<QuranRefRow[]>`
+    SELECT name_id, transliteration, qref, details
+    FROM quranrefs
+    ORDER BY name_id
+  `;
 }
 
 /**
