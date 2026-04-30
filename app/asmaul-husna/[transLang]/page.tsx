@@ -5,7 +5,6 @@ import { Settings as SettingsIcon } from "lucide-react";
 import {
   getActiveLanguages,
   getDefaultRecitation,
-  getLanguagePairs,
   getNamesWithTranslations,
 } from "@/lib/db/queries";
 import { NameGrid } from "@/components/viewer/NameGrid";
@@ -16,28 +15,30 @@ import { ShareButton } from "@/components/viewer/ShareButton";
 export const revalidate = 86400;
 
 interface PageProps {
-  params: Promise<{ translitLang: string; transLang: string }>;
+  params: Promise<{ transLang: string }>;
 }
 
 export async function generateStaticParams() {
-  return getLanguagePairs();
+  const langs = await getActiveLanguages();
+  return langs
+    .filter((l) => l.code !== "ar")
+    .map((l) => ({ transLang: l.code }));
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const { translitLang, transLang } = await params;
+  const { transLang } = await params;
   const langs = await getActiveLanguages();
-  const translit = langs.find((l) => l.code === translitLang);
-  const trans = langs.find((l) => l.code === transLang);
+  const lang = langs.find((l) => l.code === transLang);
 
-  if (!translit || !trans) {
+  if (!lang) {
     return { title: "Asma-ul-Husna" };
   }
 
   const title = "The 99 Names and Attributes of Allah (SWT)";
   const description = `Read and reflect on the 99 Names of Allah in Arabic, with transliteration and translation in multiple languages.`;
-  const url = `/asmaul-husna/${translitLang}/${transLang}`;
+  const url = `/asmaul-husna/${transLang}`;
 
   return {
     title,
@@ -59,18 +60,17 @@ export async function generateMetadata({
 }
 
 export default async function ViewerPage({ params }: PageProps) {
-  const { translitLang, transLang } = await params;
+  const { transLang } = await params;
 
   const langs = await getActiveLanguages();
-  const translit = langs.find((l) => l.code === translitLang);
-  const trans = langs.find((l) => l.code === transLang);
+  const lang = langs.find((l) => l.code === transLang);
 
-  if (!translit || !trans) {
+  if (!lang) {
     notFound();
   }
 
   const [names, recitation] = await Promise.all([
-    getNamesWithTranslations(translitLang, transLang),
+    getNamesWithTranslations(transLang, transLang),
     getDefaultRecitation(),
   ]);
 
@@ -104,8 +104,8 @@ export default async function ViewerPage({ params }: PageProps) {
       <NameGrid
         names={names}
         recitation={recitation}
-        transliterationDirection={translit.direction}
-        translationDirection={trans.direction}
+        transliterationDirection={lang.direction}
+        translationDirection={lang.direction}
       />
     </main>
   );

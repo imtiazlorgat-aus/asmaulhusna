@@ -1,4 +1,4 @@
-﻿import { redirect } from 'next/navigation';
+﻿import { redirect } from "next/navigation";
 
 /**
  * Default language pair redirect.
@@ -9,5 +9,5 @@
  * sensible default.
  */
 export default function AsmaulHusnaIndexPage() {
-  redirect('/asmaul-husna/en/en');
+  redirect("/asmaul-husna/en");
 }

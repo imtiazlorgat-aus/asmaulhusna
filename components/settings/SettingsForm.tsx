@@ -54,7 +54,7 @@ export function SettingsForm({
    */
   const handleLanguageChange = (code: string) => {
     update({ transliterationLanguage: code, translationLanguage: code });
-    router.push(`/asmaul-husna/${code}/${code}`);
+    router.push(`/asmaul-husna/${code}`);
     router.refresh();
   };
 
