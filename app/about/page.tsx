@@ -126,6 +126,20 @@ export default function AboutPage() {
               </a>{" "}
               published by MyIslam.org.
             </li>
+            <li>
+              The View on Youtube links is from{" "}
+              <a
+                href="https://www.youtube.com/watch?v=cvz4uJ4WFN0"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-foreground"
+              >
+                Faith Nasheeds
+              </a>{" "}
+              This nasheed seeks to create a sanctuary of sound—using only the
+              human voice to reflect the beauty and majesty of the Divine
+              Attributes.
+            </li>
           </ul>
         </section>
 

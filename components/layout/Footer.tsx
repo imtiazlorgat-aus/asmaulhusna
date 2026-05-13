@@ -1,8 +1,8 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { Headphones } from 'lucide-react';
+import Image from "next/image";
+import Link from "next/link";
+import { Headphones } from "lucide-react";
 
-const YOUTUBE_URL = 'https://www.youtube.com/watch?v=YxaBFVCZ7CU';
+const YOUTUBE_URL = "https://www.youtube.com/watch?v=cvz4uJ4WFN0";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -30,7 +30,7 @@ export function Footer() {
             className="inline-flex items-center gap-1.5 hover:text-foreground"
           >
             <Headphones className="h-4 w-4" aria-hidden="true" />
-            Listen on YouTube
+            View on YouTube
           </a>
         </nav>
         <div>© {year} asmaulhusna.co.za</div>
