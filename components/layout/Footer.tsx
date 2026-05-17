@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Headphones } from "lucide-react";
 
-const YOUTUBE_URL = "https://www.youtube.com/watch?v=cvz4uJ4WFN0";
+const YOUTUBE_URL =
+  "https://www.youtube.com/playlist?list=PLxQHqPfG4C0-g6UfnWi8Rr2hBGdtjvr7w";
 
 export function Footer() {
   const year = new Date().getFullYear();
