@@ -101,6 +101,7 @@ export function SettingsForm({
   const translationFontSize = useSettings((s) => s.translationFontSize);
   const backgroundImageUrl = useSettings((s) => s.backgroundImageUrl);
 
+  const hasHydrated = useSettings((s) => s.hasHydrated);
   const update = useSettings((s) => s.update);
   const reset = useSettings((s) => s.reset);
 
@@ -193,7 +194,7 @@ export function SettingsForm({
                     size="icon"
                     className="h-6 w-6"
                     title="Reset to default"
-                    // disabled={transliterationColor === ""}
+                    disabled={!hasHydrated || transliterationColor === ""}
                     onClick={() => {
                       setPrevColors((p) => ({
                         ...p,
@@ -263,7 +264,7 @@ export function SettingsForm({
                     size="icon"
                     className="h-6 w-6"
                     title="Reset to default"
-                    disabled={translationColor === ""}
+                    disabled={!hasHydrated || translationColor === ""}
                     onClick={() => {
                       setPrevColors((p) => ({ ...p, trans: translationColor }));
                       update({ translationColor: "" });
@@ -307,7 +308,9 @@ export function SettingsForm({
 
         {/* Languages */}
         <Card className="p-6">
-          <h2 className="mb-4 text-lg font-semibold">Language</h2>
+          <h2 className="mb-4 text-lg font-semibold">
+            Language for Transliteration and Translation
+          </h2>
           <LanguageSelect
             id="language"
             // label="Language"

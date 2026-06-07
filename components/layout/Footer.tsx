@@ -16,6 +16,7 @@ export function Footer() {
             alt="Asma-ul-Husna logo"
             width={32}
             height={32}
+            loading="eager"
             className="rounded-sm"
           />
           <Link href="/about" className="hover:text-foreground">

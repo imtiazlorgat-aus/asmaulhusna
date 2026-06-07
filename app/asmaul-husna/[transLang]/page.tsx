@@ -21,10 +21,14 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const langs = await getActiveLanguages();
-  return langs
-    .filter((l) => l.code !== "ar")
-    .map((l) => ({ transLang: l.code }));
+  try {
+    const langs = await getActiveLanguages();
+    return langs
+      .filter((l) => l.code !== "ar")
+      .map((l) => ({ transLang: l.code }));
+  } catch {
+    return [{ transLang: "en" }];
+  }
 }
 
 export async function generateMetadata({

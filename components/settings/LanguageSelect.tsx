@@ -31,6 +31,7 @@ function LanguageOption({ lang }: { lang: LanguageRow }) {
           alt={lang.name}
           width={20}
           height={15}
+          loading="eager"
           className="object-cover"
         />
       )}
