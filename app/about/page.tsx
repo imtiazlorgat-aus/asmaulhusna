@@ -72,12 +72,24 @@ export default function AboutPage() {
             .
           </p>
           <p>
-            For English language only, additional information is extracted from
-            MyIslam.org.
+            For English language only, additional information is extracted from{" "}
+            <a
+              href="https://myislam.org/99-names-of-Allah/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-foreground"
+            >
+              MyIslam.org
+            </a>
+            .
           </p>
           <p className="text-foreground/90">
             If you notice errors or have any suggestions, please reach out via
-            the <span className="font-semibold">Contact Us</span> link below.
+            the{" "}
+            <Link href="/contact" className="hover:text-foreground underline">
+              Contact Us
+            </Link>{" "}
+            page.
           </p>
         </section>
 
@@ -126,6 +138,17 @@ export default function AboutPage() {
               </a>{" "}
               published by MyIslam.org.
             </li>
+          </ul>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-lg font-semibold">Abbreviations and meanings</h2>
+          <ul className="ml-5 list-disc space-y-2 text-foreground/90">
+            <li>
+              SWT - Subhanahu wa ta&apos;ala - The most glorified, the most
+              high.
+            </li>
+            <li>Alayhis Salaam - Peace be upon him.</li>
           </ul>
         </section>
 
