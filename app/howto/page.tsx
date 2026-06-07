@@ -27,18 +27,28 @@ export default function HowtoPage() {
       </div>
 
       <div className="max-w-none space-y-8 leading-relaxed">
+        <section className="space-y-3 border-b-2">
+          <p className="text-foreground/90 mb-4">
+            Reciting Asmaul Husna (the 99 Names of Allah) involves calling upon
+            Allah by His beautiful attributes. You can recite them sequentially
+            as a daily Dhikr, or incorporate specific names into personal
+            supplications (Dua) that align with your needs.
+          </p>
+        </section>
         <section className="space-y-3">
           <p className="text-sm text-muted-foreground">
-            Extracted from{" "}
+            The advice below is extracted from{" "}
             <span className="font-semibold">
               Dua&apos;s for the contentment of the Heart
             </span>
           </p>
         </section>
         <section className="space-y-3">
-          <p className="text-foreground/90">
-            When wishing to recite ALL the Beautiful Names of Allah, begin by
-            saying:
+          <div className="text-foreground/90">
+            <p>
+              When wishing to recite ALL the Beautiful Names of Allah, begin by
+              saying:
+            </p>
             <p
               className="font-uthmanic text-xl text-center mt-2 mb-2"
               dir="rtl"
@@ -46,12 +56,18 @@ export default function HowtoPage() {
             >
               هُوَ اللهُ الَّذِیْ لَا اِلٰهَ اِلَّا هُوَ الرَّحْمٰنُ الرَّحِیْمُ
             </p>
-            and continue reciting the names until the end. But the last letter
-            of each word should be recited with the vowel Dhamma (Pesh) and
-            joined to the next word. But when pausing to take breath the last
-            letter should be recited with Saakin (jazam) and the following word
-            should be started with.
-          </p>
+            <p className="text-xs text-center italic text-muted-foreground mb-2">
+              He is Allah, other than whom there is no deity, the Most Gracious,
+              the Most Merciful
+            </p>
+            <p>
+              Then, continue reciting the names until the end. But the last
+              letter of each word should be recited with the vowel Dhamma (Pesh)
+              and joined to the next word. But when pausing to take breath the
+              last letter should be recited with Saakin (jazam) and the
+              following word should be started with.
+            </p>
+          </div>
         </section>
 
         <section className="space-y-3">
@@ -85,15 +101,6 @@ export default function HowtoPage() {
           <p className="text-foreground/90">
             A learned Aalim should be consulted when one experiences any
             difficulty.
-          </p>
-        </section>
-        <section className="space-y-3">
-          <h2 className="font-bold border-2 border-t"></h2>
-          <p className="text-foreground/90">
-            Reciting Asmaul Husna (the 99 Names of Allah) involves calling upon
-            Allah by His beautiful attributes. You can recite them sequentially
-            as a daily Dhikr, or incorporate specific names into personal
-            supplications (Dua) that align with your needs.
           </p>
         </section>
       </div>

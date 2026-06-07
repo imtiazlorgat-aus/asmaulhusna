@@ -14,8 +14,7 @@ import { cn } from "@/lib/utils";
  * size — under 150KB per image is a good target for fast panel loads.
  */
 const PRESETS: Array<{ url: string; label: string }> = [
-  { url: "/backgrounds/geometric-1.png", label: "Geometric 1" },
-  { url: "/backgrounds/geometric-2.png", label: "Geometric 2" },
+  { url: "/backgrounds/gradient-green.png", label: "Green Gradient" },
   { url: "/backgrounds/gradient-navy.png", label: "Navy Gradient" },
 ];
 

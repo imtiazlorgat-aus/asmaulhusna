@@ -71,26 +71,42 @@ export default function IntroductionPage() {
           <p className="text-foreground/90 text-sm pl-4">
             Those who believe and whose hearts find satisfaction in the
             remembrance of Allah: for without doubt in the remembrance of Allah
-            do hearts find satisfaction. (13:28)
+            do hearts find satisfaction.
+            <span className="text-muted-foreground text-xs italic">
+              {" "}
+              (Quran - Surah Ar-Ra&apos;d - 13:28)
+            </span>
           </p>
           <p className="text-foreground/90 text-sm pl-4">
             And remembrance of Allah is the greatest (thing in life) without
-            doubt. (29:45)
+            doubt.{" "}
+            <span className="text-muted-foreground text-xs italic">
+              (Quran - Surah Al-Ankabut - 29:45)
+            </span>
           </p>
           <p className="text-foreground/90 text-sm pl-4">
             O&apos; You who believe! Celebrate the praises of Allah, and do this
-            often. (33:41)
+            often.{" "}
+            <span className="text-muted-foreground text-xs italic">
+              (Quran - Surah Al-Ahzab - 33:41)
+            </span>
           </p>
           <p className="text-foreground/90 text-sm pl-4">
             Therefore, remember Me and I will remember you; and be thankful unto
-            Me and be you not ungrateful towards Me. (2:152)
+            Me and be you not ungrateful towards Me.{" "}
+            <span className="text-muted-foreground text-xs italic">
+              (Quran - Surah Al-Baqarah - 2:152)
+            </span>
           </p>
           <p className="text-foreground/90 text-sm pl-4">Again Allah says:</p>
           <p className="text-foreground/90 text-sm pl-4">
             And do you (O reader!) bring Your Lord to remembrance in your (very)
             soul with humility and in reverence, without loudness in words, in
             the mornings and evenings; and to be not you of those who are
-            unheedful. (7:205)
+            unheedful.{" "}
+            <span className="text-muted-foreground text-xs italic">
+              (Quran - Surah Al-A&apos;raf - 7:205)
+            </span>
           </p>
         </section>
         <section className="space-y-3">
