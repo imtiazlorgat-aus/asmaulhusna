@@ -1,15 +1,19 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Headphones, Square } from "lucide-react";
+import { BookOpen, Headphones, HelpCircle, Square } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { NamePanel } from "./NamePanel";
 import { PaginationControls } from "./PaginationControls";
-import { VisibilityToggles } from "./VisibilityToggles";
 import { useSettings } from "@/lib/store/settings-store";
 import { useAudioPlayback } from "@/lib/audio/useAudioPlayback";
 import { WelcomeToast } from "./WelcomeToast";
-import type { DefaultRecitation, NameWithTranslations, QuranRefRow } from "@/lib/db/types";
+import type {
+  DefaultRecitation,
+  NameWithTranslations,
+  QuranRefRow,
+} from "@/lib/db/types";
 
 interface NameGridProps {
   /** All 99 names with translations for the chosen language pair. */
@@ -220,7 +224,18 @@ export function NameGrid({
             )}
           </Button>
         )}
-        <VisibilityToggles />
+        <Button variant="outline" size="sm" asChild>
+          <Link href="/introduction">
+            <BookOpen className="h-4 w-4" />
+            Introduction
+          </Link>
+        </Button>
+        <Button variant="outline" size="sm" asChild>
+          <Link href="/howto">
+            <HelpCircle className="h-4 w-4" />
+            How to Recite
+          </Link>
+        </Button>
       </div>
     </div>
   );

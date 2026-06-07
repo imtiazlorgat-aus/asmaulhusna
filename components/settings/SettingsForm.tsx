@@ -36,6 +36,8 @@ export function SettingsForm({
 
   // Subscribe to each field individually so we only re-render on real changes.
   const namesPerPage = useSettings((s) => s.namesPerPage);
+  const showTransliteration = useSettings((s) => s.showTransliteration);
+  const showTranslation = useSettings((s) => s.showTranslation);
   const swipeUpDown = useSettings((s) => s.swipeUpDown);
   const swipeLeftRight = useSettings((s) => s.swipeLeftRight);
   const transliterationLanguage = useSettings((s) => s.transliterationLanguage);
@@ -80,6 +82,22 @@ export function SettingsForm({
                 max={SETTINGS_BOUNDS.namesPerPage.max}
                 step={SETTINGS_BOUNDS.namesPerPage.step}
                 onValueChange={(v) => update({ namesPerPage: v[0] })}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="show-transliteration">Show Transliteration</Label>
+              <Switch
+                id="show-transliteration"
+                checked={showTransliteration}
+                onCheckedChange={(v) => update({ showTransliteration: v })}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="show-translation">Show Translation</Label>
+              <Switch
+                id="show-translation"
+                checked={showTranslation}
+                onCheckedChange={(v) => update({ showTranslation: v })}
               />
             </div>
           </div>
