@@ -20,6 +20,8 @@ interface FontSizeSliderProps {
   previewFontFamily?: string;
   /** Direction for the preview text (e.g., 'rtl' for Arabic). */
   previewDirection?: 'ltr' | 'rtl';
+  /** Optional color override for the preview text. */
+  previewColor?: string;
 }
 
 /**
@@ -39,6 +41,7 @@ export function FontSizeSlider({
   previewText,
   previewFontFamily,
   previewDirection = 'ltr',
+  previewColor,
 }: FontSizeSliderProps) {
   return (
     <div className="flex flex-col gap-3">
@@ -65,6 +68,7 @@ export function FontSizeSlider({
           style={{
             fontSize: `${value}px`,
             fontFamily: previewFontFamily,
+            ...(previewColor ? { color: previewColor } : {}),
           }}
         >
           {previewText}

@@ -33,7 +33,7 @@ function createClient() {
     // max × worker-count must stay under Aiven's connection limit.
     max: 2,
     idle_timeout: 10,
-    connect_timeout: 10,
+    connect_timeout: 30,
     onnotice: () => {},
   });
 }

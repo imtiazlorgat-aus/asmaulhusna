@@ -66,6 +66,8 @@ export function NamePanel({
   const arabicFontSize = useSettings((s) => s.arabicFontSize);
   const transliterationFontSize = useSettings((s) => s.transliterationFontSize);
   const translationFontSize = useSettings((s) => s.translationFontSize);
+  const transliterationColor = useSettings((s) => s.transliterationColor);
+  const translationColor = useSettings((s) => s.translationColor);
   const backgroundImageUrl = useSettings((s) => s.backgroundImageUrl);
 
   return (
@@ -133,7 +135,10 @@ export function NamePanel({
             <p
               dir={transliterationDirection}
               className="italic text-muted-foreground"
-              style={{ fontSize: `${transliterationFontSize}px` }}
+              style={{
+                fontSize: `${transliterationFontSize}px`,
+                ...(transliterationColor ? { color: transliterationColor } : {}),
+              }}
             >
               {name.transliteration}
             </p>
@@ -145,7 +150,10 @@ export function NamePanel({
           <p
             dir={translationDirection}
             className="text-foreground"
-            style={{ fontSize: `${translationFontSize}px` }}
+            style={{
+              fontSize: `${translationFontSize}px`,
+              ...(translationColor ? { color: translationColor } : {}),
+            }}
           >
             {name.translation}
           </p>

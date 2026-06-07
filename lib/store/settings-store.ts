@@ -15,6 +15,10 @@ export interface Settings {
   showTransliteration: boolean;
   showTranslation: boolean;
 
+  // Text colors — empty string means "use theme default"
+  transliterationColor: string;
+  translationColor: string;
+
   // Language selection (matches `languages.code` in the DB)
   transliterationLanguage: string;
   translationLanguage: string;
@@ -44,6 +48,8 @@ export const DEFAULT_SETTINGS: Settings = {
   namesPerPage: 3,
   showTransliteration: true,
   showTranslation: true,
+  transliterationColor: "",
+  translationColor: "",
   transliterationLanguage: "en",
   translationLanguage: "en",
   arabicFontSize: 54,
@@ -109,6 +115,8 @@ export const useSettings = create<SettingsState>()(
         namesPerPage: state.namesPerPage,
         showTransliteration: state.showTransliteration,
         showTranslation: state.showTranslation,
+        transliterationColor: state.transliterationColor,
+        translationColor: state.translationColor,
         transliterationLanguage: state.transliterationLanguage,
         translationLanguage: state.translationLanguage,
         arabicFontSize: state.arabicFontSize,
@@ -125,14 +133,17 @@ export const useSettings = create<SettingsState>()(
       migrate: (persisted: unknown, version: number) => {
         const s = persisted as Partial<Settings>;
         if (version < 2) {
-          // swipeUpDown was added in v2 — default it on for existing users.
           if (s.swipeUpDown === undefined) s.swipeUpDown = false;
           if (s.swipeLeftRight === undefined) s.swipeLeftRight = true;
           if (s.hasSeenWelcome === undefined) s.hasSeenWelcome = false;
         }
+        if (version < 3) {
+          if (s.transliterationColor === undefined) s.transliterationColor = "";
+          if (s.translationColor === undefined) s.translationColor = "";
+        }
         return s;
       },
-      version: 2,
+      version: 3,
     },
   ),
 );

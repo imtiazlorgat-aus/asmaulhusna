@@ -1,6 +1,23 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Undo2, X } from "lucide-react";
+
+// Resolve a CSS variable to a #rrggbb hex by injecting a hidden element and
+// letting the browser compute the color — works for any color format and
+// correctly inherits the live dark/light cascade from the DOM.
+function readCssColor(cssVar: string): string | null {
+  if (typeof window === "undefined" || !document.body) return null;
+  const el = document.createElement("div");
+  el.style.cssText = `color:var(${cssVar});position:absolute;visibility:hidden`;
+  document.body.appendChild(el);
+  const rgb = getComputedStyle(el).color; // always resolves to rgb(r, g, b)
+  document.body.removeChild(el);
+  const m = rgb.match(/(\d+),\s*(\d+),\s*(\d+)/);
+  if (!m) return null;
+  return "#" + [m[1], m[2], m[3]].map((n) => parseInt(n).toString(16).padStart(2, "0")).join("");
+}
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -34,10 +51,34 @@ export function SettingsForm({
 }: SettingsFormProps) {
   const router = useRouter();
 
+  // Track the computed theme colors so the color picker shows the correct
+  // default swatch in both light and dark mode. Re-reads whenever the
+  // `.dark` class is toggled on <html>.
+  const [themeColors, setThemeColors] = useState({ translit: "#737373", trans: "#0a0a0a" });
+  useEffect(() => {
+    const update = () =>
+      setThemeColors({
+        translit: readCssColor("--muted-foreground") ?? "#737373",
+        trans: readCssColor("--foreground") ?? "#0a0a0a",
+      });
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  // Per-picker undo stack (one level). null = no snapshot yet.
+  const [prevColors, setPrevColors] = useState<{ translit: string | null; trans: string | null }>({
+    translit: null,
+    trans: null,
+  });
+
   // Subscribe to each field individually so we only re-render on real changes.
   const namesPerPage = useSettings((s) => s.namesPerPage);
   const showTransliteration = useSettings((s) => s.showTransliteration);
   const showTranslation = useSettings((s) => s.showTranslation);
+  const transliterationColor = useSettings((s) => s.transliterationColor);
+  const translationColor = useSettings((s) => s.translationColor);
   const swipeUpDown = useSettings((s) => s.swipeUpDown);
   const swipeLeftRight = useSettings((s) => s.swipeLeftRight);
   const transliterationLanguage = useSettings((s) => s.transliterationLanguage);
@@ -86,19 +127,113 @@ export function SettingsForm({
             </div>
             <div className="flex items-center justify-between">
               <Label htmlFor="show-transliteration">Show Transliteration</Label>
-              <Switch
-                id="show-transliteration"
-                checked={showTransliteration}
-                onCheckedChange={(v) => update({ showTransliteration: v })}
-              />
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 rounded-md border border-input px-1 py-1">
+                  <div className="relative h-6 w-6 shrink-0">
+                    <div
+                      className="h-6 w-6 rounded border border-input"
+                      style={{ backgroundColor: transliterationColor || themeColors.translit }}
+                    />
+                    <input
+                      type="color"
+                      aria-label="Transliteration colour"
+                      value={transliterationColor || themeColors.translit}
+                      onFocus={() => setPrevColors((p) => ({ ...p, translit: transliterationColor }))}
+                      onChange={(e) => update({ transliterationColor: e.target.value })}
+                      className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    title="Undo"
+                    disabled={prevColors.translit === null || prevColors.translit === transliterationColor}
+                    onClick={() => {
+                      const current = transliterationColor;
+                      update({ transliterationColor: prevColors.translit ?? "" });
+                      setPrevColors((p) => ({ ...p, translit: current }));
+                    }}
+                  >
+                    <Undo2 className="h-3.5 w-3.5" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    title="Reset to default"
+                    disabled={transliterationColor === ""}
+                    onClick={() => {
+                      setPrevColors((p) => ({ ...p, translit: transliterationColor }));
+                      update({ transliterationColor: "" });
+                    }}
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+                <Switch
+                  id="show-transliteration"
+                  checked={showTransliteration}
+                  onCheckedChange={(v) => update({ showTransliteration: v })}
+                />
+              </div>
             </div>
             <div className="flex items-center justify-between">
               <Label htmlFor="show-translation">Show Translation</Label>
-              <Switch
-                id="show-translation"
-                checked={showTranslation}
-                onCheckedChange={(v) => update({ showTranslation: v })}
-              />
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 rounded-md border border-input px-1 py-1">
+                  <div className="relative h-6 w-6 shrink-0">
+                    <div
+                      className="h-6 w-6 rounded border border-input"
+                      style={{ backgroundColor: translationColor || themeColors.trans }}
+                    />
+                    <input
+                      type="color"
+                      aria-label="Translation colour"
+                      value={translationColor || themeColors.trans}
+                      onFocus={() => setPrevColors((p) => ({ ...p, trans: translationColor }))}
+                      onChange={(e) => update({ translationColor: e.target.value })}
+                      className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    title="Undo"
+                    disabled={prevColors.trans === null || prevColors.trans === translationColor}
+                    onClick={() => {
+                      const current = translationColor;
+                      update({ translationColor: prevColors.trans ?? "" });
+                      setPrevColors((p) => ({ ...p, trans: current }));
+                    }}
+                  >
+                    <Undo2 className="h-3.5 w-3.5" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    title="Reset to default"
+                    disabled={translationColor === ""}
+                    onClick={() => {
+                      setPrevColors((p) => ({ ...p, trans: translationColor }));
+                      update({ translationColor: "" });
+                    }}
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+                <Switch
+                  id="show-translation"
+                  checked={showTranslation}
+                  onCheckedChange={(v) => update({ showTranslation: v })}
+                />
+              </div>
             </div>
           </div>
         </Card>
@@ -165,6 +300,7 @@ export function SettingsForm({
               onChange={(v) => update({ transliterationFontSize: v })}
               previewText={previewName.transliteration ?? "Ar-Rahman"}
               previewDirection={previewTransliterationDirection}
+              previewColor={transliterationColor || undefined}
             />
             <FontSizeSlider
               id="translation-font-size"
@@ -176,6 +312,7 @@ export function SettingsForm({
               onChange={(v) => update({ translationFontSize: v })}
               previewText={previewName.translation ?? "The Most Compassionate"}
               previewDirection={previewTranslationDirection}
+              previewColor={translationColor || undefined}
             />
           </div>
         </Card>

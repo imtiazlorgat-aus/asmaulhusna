@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { X } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 /**
  * Curated backgrounds shipped in /public/backgrounds.
@@ -14,10 +14,9 @@ import { cn } from '@/lib/utils';
  * size — under 150KB per image is a good target for fast panel loads.
  */
 const PRESETS: Array<{ url: string; label: string }> = [
-  { url: '/backgrounds/geometric-1.jpg', label: 'Geometric 1' },
-  { url: '/backgrounds/geometric-2.jpg', label: 'Geometric 2' },
-  { url: '/backgrounds/arabesque.jpg',   label: 'Arabesque' },
-  { url: '/backgrounds/gradient-navy.jpg', label: 'Navy Gradient' },
+  { url: "/backgrounds/geometric-1.png", label: "Geometric 1" },
+  { url: "/backgrounds/geometric-2.png", label: "Geometric 2" },
+  { url: "/backgrounds/gradient-navy.png", label: "Navy Gradient" },
 ];
 
 interface BackgroundImagePickerProps {
@@ -30,7 +29,7 @@ export function BackgroundImagePicker({
   onChange,
 }: BackgroundImagePickerProps) {
   const [customUrl, setCustomUrl] = useState(
-    value && !PRESETS.some((p) => p.url === value) ? value : '',
+    value && !PRESETS.some((p) => p.url === value) ? value : "",
   );
 
   return (
@@ -44,10 +43,10 @@ export function BackgroundImagePicker({
           onClick={() => onChange(null)}
           aria-label="No background"
           className={cn(
-            'relative flex aspect-square items-center justify-center rounded-md border-2 bg-muted/30 text-xs text-muted-foreground transition-colors',
+            "relative flex aspect-square items-center justify-center rounded-md border-2 bg-muted/30 text-xs text-muted-foreground transition-colors",
             value === null
-              ? 'border-foreground'
-              : 'border-transparent hover:border-muted-foreground/40',
+              ? "border-foreground"
+              : "border-transparent hover:border-muted-foreground/40",
           )}
         >
           <X className="h-4 w-4" />
@@ -61,15 +60,15 @@ export function BackgroundImagePicker({
             aria-label={preset.label}
             aria-pressed={value === preset.url}
             className={cn(
-              'relative aspect-square overflow-hidden rounded-md border-2 transition-colors',
+              "relative aspect-square overflow-hidden rounded-md border-2 transition-colors",
               value === preset.url
-                ? 'border-foreground'
-                : 'border-transparent hover:border-muted-foreground/40',
+                ? "border-foreground"
+                : "border-transparent hover:border-muted-foreground/40",
             )}
             style={{
               backgroundImage: `url(${preset.url})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
           />
         ))}
@@ -77,7 +76,10 @@ export function BackgroundImagePicker({
 
       {/* Custom URL input */}
       <div className="flex flex-col gap-2">
-        <Label htmlFor="custom-bg-url" className="text-xs text-muted-foreground">
+        <Label
+          htmlFor="custom-bg-url"
+          className="text-xs text-muted-foreground"
+        >
           Or paste an image URL
         </Label>
         <div className="flex gap-2">
