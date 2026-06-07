@@ -16,7 +16,12 @@ function readCssColor(cssVar: string): string | null {
   document.body.removeChild(el);
   const m = rgb.match(/(\d+),\s*(\d+),\s*(\d+)/);
   if (!m) return null;
-  return "#" + [m[1], m[2], m[3]].map((n) => parseInt(n).toString(16).padStart(2, "0")).join("");
+  return (
+    "#" +
+    [m[1], m[2], m[3]]
+      .map((n) => parseInt(n).toString(16).padStart(2, "0"))
+      .join("")
+  );
 }
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -54,21 +59,30 @@ export function SettingsForm({
   // Track the computed theme colors so the color picker shows the correct
   // default swatch in both light and dark mode. Re-reads whenever the
   // `.dark` class is toggled on <html>.
-  const [themeColors, setThemeColors] = useState({ translit: "#737373", trans: "#0a0a0a" });
+  const [themeColors, setThemeColors] = useState({
+    translit: "#737373",
+    trans: "#fff",
+  });
   useEffect(() => {
     const update = () =>
       setThemeColors({
         translit: readCssColor("--muted-foreground") ?? "#737373",
-        trans: readCssColor("--foreground") ?? "#0a0a0a",
+        trans: readCssColor("--foreground") ?? "#fff",
       });
     update();
     const observer = new MutationObserver(update);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
     return () => observer.disconnect();
   }, []);
 
   // Per-picker undo stack (one level). null = no snapshot yet.
-  const [prevColors, setPrevColors] = useState<{ translit: string | null; trans: string | null }>({
+  const [prevColors, setPrevColors] = useState<{
+    translit: string | null;
+    trans: string | null;
+  }>({
     translit: null,
     trans: null,
   });
@@ -132,14 +146,24 @@ export function SettingsForm({
                   <div className="relative h-6 w-6 shrink-0">
                     <div
                       className="h-6 w-6 rounded border border-input"
-                      style={{ backgroundColor: transliterationColor || themeColors.translit }}
+                      style={{
+                        backgroundColor:
+                          transliterationColor || themeColors.translit,
+                      }}
                     />
                     <input
                       type="color"
                       aria-label="Transliteration colour"
                       value={transliterationColor || themeColors.translit}
-                      onFocus={() => setPrevColors((p) => ({ ...p, translit: transliterationColor }))}
-                      onChange={(e) => update({ transliterationColor: e.target.value })}
+                      onFocus={() =>
+                        setPrevColors((p) => ({
+                          ...p,
+                          translit: transliterationColor,
+                        }))
+                      }
+                      onChange={(e) =>
+                        update({ transliterationColor: e.target.value })
+                      }
                       className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
                     />
                   </div>
@@ -149,10 +173,15 @@ export function SettingsForm({
                     size="icon"
                     className="h-6 w-6"
                     title="Undo"
-                    disabled={prevColors.translit === null || prevColors.translit === transliterationColor}
+                    disabled={
+                      prevColors.translit === null ||
+                      prevColors.translit === transliterationColor
+                    }
                     onClick={() => {
                       const current = transliterationColor;
-                      update({ transliterationColor: prevColors.translit ?? "" });
+                      update({
+                        transliterationColor: prevColors.translit ?? "",
+                      });
                       setPrevColors((p) => ({ ...p, translit: current }));
                     }}
                   >
@@ -164,9 +193,12 @@ export function SettingsForm({
                     size="icon"
                     className="h-6 w-6"
                     title="Reset to default"
-                    disabled={transliterationColor === ""}
+                    // disabled={transliterationColor === ""}
                     onClick={() => {
-                      setPrevColors((p) => ({ ...p, translit: transliterationColor }));
+                      setPrevColors((p) => ({
+                        ...p,
+                        translit: transliterationColor,
+                      }));
                       update({ transliterationColor: "" });
                     }}
                   >
@@ -187,14 +219,23 @@ export function SettingsForm({
                   <div className="relative h-6 w-6 shrink-0">
                     <div
                       className="h-6 w-6 rounded border border-input"
-                      style={{ backgroundColor: translationColor || themeColors.trans }}
+                      style={{
+                        backgroundColor: translationColor || themeColors.trans,
+                      }}
                     />
                     <input
                       type="color"
                       aria-label="Translation colour"
                       value={translationColor || themeColors.trans}
-                      onFocus={() => setPrevColors((p) => ({ ...p, trans: translationColor }))}
-                      onChange={(e) => update({ translationColor: e.target.value })}
+                      onFocus={() =>
+                        setPrevColors((p) => ({
+                          ...p,
+                          trans: translationColor,
+                        }))
+                      }
+                      onChange={(e) =>
+                        update({ translationColor: e.target.value })
+                      }
                       className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
                     />
                   </div>
@@ -204,7 +245,10 @@ export function SettingsForm({
                     size="icon"
                     className="h-6 w-6"
                     title="Undo"
-                    disabled={prevColors.trans === null || prevColors.trans === translationColor}
+                    disabled={
+                      prevColors.trans === null ||
+                      prevColors.trans === translationColor
+                    }
                     onClick={() => {
                       const current = translationColor;
                       update({ translationColor: prevColors.trans ?? "" });
