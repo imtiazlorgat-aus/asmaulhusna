@@ -118,6 +118,27 @@ export default function IntroductionPage() {
             worldly life.
           </p>
         </section>
+        <section className="space-y-3  border-t-2 mt-4">
+          <p className="text-muted/110 mt-2">Hadith narrated by Abu Huraira:</p>
+          <p className="text-foreground/90">
+            <span className="font-uthmanic" dir="rtl" lang="ar">
+              حَدَّثَنَا عَلِيُّ بْنُ عَبْدِ اللَّهِ، حَدَّثَنَا سُفْيَانُ،
+              قَالَ حَفِظْنَاهُ مِنْ أَبِي الزِّنَادِ عَنِ الأَعْرَجِ، عَنْ
+              أَبِي هُرَيْرَةَ، رِوَايَةً قَالَ لِلَّهِ تِسْعَةٌ وَتِسْعُونَ
+              اسْمًا، مِائَةٌ إِلاَّ وَاحِدًا، لاَ يَحْفَظُهَا أَحَدٌ إِلاَّ
+              دَخَلَ الْجَنَّةَ، وَهْوَ وَتْرٌ يُحِبُّ الْوَتْرَ
+            </span>
+          </p>
+          <p className="text-foreground/90 text-sm">
+            Allah has ninety-nine Names, i.e., one hundred minus one, and
+            whoever believes in their meanings and acts accordingly, will enter
+            Paradise; and Allah is witr (one) and loves the &apos;witr&apos;
+            (i.e. odd numbers).{" "}
+            <span className="text-muted-foreground text-xs italic">
+              (Sahih al-Bukhari 6410 - Book 80, Hadith 105)
+            </span>
+          </p>
+        </section>
       </div>
     </main>
   );
