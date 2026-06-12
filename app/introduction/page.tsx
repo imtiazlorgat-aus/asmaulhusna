@@ -68,6 +68,10 @@ export default function IntroductionPage() {
         </section>
 
         <section className="space-y-3 border-l border-blue-400">
+          <p className="font-uthmanic text-center" dir="rtl" lang="ar">
+            ٱلَّذِينَ ءَامَنُوا۟ وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ ٱللَّهِ ۗ
+            أَلَا بِذِكْرِ ٱللَّهِ تَطْمَئِنُّ ٱلْقُلُوبُ ٢٨
+          </p>
           <p className="text-foreground/90 text-sm pl-4">
             Those who believe and whose hearts find satisfaction in the
             remembrance of Allah: for without doubt in the remembrance of Allah
@@ -77,12 +81,23 @@ export default function IntroductionPage() {
               (Quran - Surah Ar-Ra&apos;d - 13:28)
             </span>
           </p>
+          <p className="font-uthmanic text-center" dir="rtl" lang="ar">
+            ٱتْلُ مَآ أُوحِىَ إِلَيْكَ مِنَ ٱلْكِتَـٰبِ وَأَقِمِ ٱلصَّلَوٰةَ ۖ
+            إِنَّ ٱلصَّلَوٰةَ تَنْهَىٰ <br />
+            عَنِ ٱلْفَحْشَآءِ وَٱلْمُنكَرِ ۗ وَلَذِكْرُ ٱللَّهِ أَكْبَرُ ۗ
+            وَٱللَّهُ يَعْلَمُ مَا تَصْنَعُونَ ٤٥
+          </p>
           <p className="text-foreground/90 text-sm pl-4">
-            And remembrance of Allah is the greatest (thing in life) without
-            doubt.{" "}
+            Recite what has been revealed to you of the Book and establish
+            prayer. Indeed, prayer prohibits immorality and wrongdoing, and the
+            remembrance of Allah is greater. And Allah knows that which you do.{" "}
             <span className="text-muted-foreground text-xs italic">
               (Quran - Surah Al-Ankabut - 29:45)
             </span>
+          </p>
+          <p className="font-uthmanic text-center" dir="rtl" lang="ar">
+            يَـٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ ٱذْكُرُوا۟ ٱللَّهَ ذِكْرًۭا
+            كَثِيرًۭا ٤١
           </p>
           <p className="text-foreground/90 text-sm pl-4">
             O&apos; You who believe! Celebrate the praises of Allah, and do this
@@ -91,6 +106,9 @@ export default function IntroductionPage() {
               (Quran - Surah Al-Ahzab - 33:41)
             </span>
           </p>
+          <p className="font-uthmanic text-center" dir="rtl" lang="ar">
+            فَٱذْكُرُونِىٓ أَذْكُرْكُمْ وَٱشْكُرُوا۟ لِى وَلَا تَكْفُرُونِ ١٥٢
+          </p>
           <p className="text-foreground/90 text-sm pl-4">
             Therefore, remember Me and I will remember you; and be thankful unto
             Me and be you not ungrateful towards Me.{" "}
@@ -98,7 +116,11 @@ export default function IntroductionPage() {
               (Quran - Surah Al-Baqarah - 2:152)
             </span>
           </p>
-          <p className="text-foreground/90 text-sm pl-4">Again Allah says:</p>
+          <p className="font-uthmanic text-center" dir="rtl" lang="ar">
+            وَٱذْكُر رَّبَّكَ فِى نَفْسِكَ تَضَرُّعًۭا وَخِيفَةًۭ وَدُونَ
+            ٱلْجَهْرِ مِنَ ٱلْقَوْلِ بِٱلْغُدُوِّ وَٱلْـَٔاصَالِ وَلَا تَكُن
+            مِّنَ ٱلْغَـٰفِلِينَ ٢٠٥
+          </p>
           <p className="text-foreground/90 text-sm pl-4">
             And do you (O reader!) bring Your Lord to remembrance in your (very)
             soul with humility and in reverence, without loudness in words, in
@@ -119,21 +141,24 @@ export default function IntroductionPage() {
           </p>
         </section>
         <section className="space-y-3  border-t-2 mt-4">
-          <p className="text-muted/110 mt-2">Hadith narrated by Abu Huraira:</p>
-          <p className="text-foreground/90">
+          <p className="text-foreground/90 mt-2">
+            Hadith narrated by Abu Huraira:
+          </p>
+          <p className="text-foreground/90 text-center">
             <span className="font-uthmanic" dir="rtl" lang="ar">
               حَدَّثَنَا عَلِيُّ بْنُ عَبْدِ اللَّهِ، حَدَّثَنَا سُفْيَانُ،
               قَالَ حَفِظْنَاهُ مِنْ أَبِي الزِّنَادِ عَنِ الأَعْرَجِ، عَنْ
-              أَبِي هُرَيْرَةَ، رِوَايَةً قَالَ لِلَّهِ تِسْعَةٌ وَتِسْعُونَ
-              اسْمًا، مِائَةٌ إِلاَّ وَاحِدًا، لاَ يَحْفَظُهَا أَحَدٌ إِلاَّ
-              دَخَلَ الْجَنَّةَ، وَهْوَ وَتْرٌ يُحِبُّ الْوَتْرَ
+              أَبِي هُرَيْرَةَ، <br />
+              رِوَايَةً قَالَ لِلَّهِ تِسْعَةٌ وَتِسْعُونَ اسْمًا، مِائَةٌ
+              إِلاَّ وَاحِدًا، لاَ يَحْفَظُهَا أَحَدٌ إِلاَّ دَخَلَ الْجَنَّةَ،
+              وَهْوَ وَتْرٌ يُحِبُّ الْوَتْرَ
             </span>
           </p>
           <p className="text-foreground/90 text-sm">
             Allah has ninety-nine Names, i.e., one hundred minus one, and
             whoever believes in their meanings and acts accordingly, will enter
-            Paradise; and Allah is witr (one) and loves the &apos;witr&apos;
-            (i.e. odd numbers).{" "}
+            Paradise; and Allah is <em>witr</em> (one) and loves the{" "}
+            <em>witr</em> (i.e. odd numbers).{" "}
             <span className="text-muted-foreground text-xs italic">
               (Sahih al-Bukhari 6410 - Book 80, Hadith 105)
             </span>
