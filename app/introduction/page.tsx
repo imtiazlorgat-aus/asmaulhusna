@@ -63,8 +63,9 @@ export default function IntroductionPage() {
           </p>
           <p className="text-foreground/90">
             Allah, therefore, tells us to remember Him and draw near to Him by
-            reciting His name or His attributes. Allah says:
+            reciting His name or His attributes.{" "}
           </p>
+          <p className="text-foreground/90 font-semibold">Allah (SWT) says:</p>
         </section>
 
         <section className="space-y-3 border-l border-blue-400">
@@ -141,10 +142,37 @@ export default function IntroductionPage() {
           </p>
         </section>
         <section className="space-y-3  border-t-2 mt-4">
-          <p className="text-foreground/90 mt-2">
-            Hadith narrated by Abu Huraira:
+          <p className="text-foreground/90 font-semibold mt-2">
+            Hadith narrated by Abu Huraira{" "}
+            <span className="font-uthmanic" dir="rtl" lang="ar">
+              رضى الله عنه
+            </span>{" "}
+            — Allah&apos;s Messenger{" "}
+            <span className="font-uthmanic" dir="rtl" lang="ar">
+              ﷺ
+            </span>{" "}
+            said:
           </p>{" "}
           <section className="space-y-3 border-l border-blue-400 pl-4">
+            <p className="text-foreground/90 text-center">
+              <span className="font-uthmanic" dir="rtl" lang="ar">
+                حَدَّثَنَا أَبُو الْيَمَانِ، أَخْبَرَنَا شُعَيْبٌ، حَدَّثَنَا
+                أَبُو الزِّنَادِ، عَنِ الأَعْرَجِ، عَنْ أَبِي هُرَيْرَةَ ، رضى
+                الله عنه ،
+                <br />
+                أَنَّ رَسُولَ اللَّهِ صلى الله عليه وسلم قَالَ إِنَّ لِلَّهِ
+                تِسْعَةً وَتِسْعِينَ اسْمَا مِائَةً إِلاَّ وَاحِدًا مَنْ
+                أَحْصَاهَا دَخَلَ الْجَنَّةَ
+              </span>
+            </p>
+            <p className="text-foreground/90 text-sm">
+              Allah has ninety-nine names, i.e. one-hundred minus one, and
+              whoever knows them will go to Paradise.{" "}
+              <span className="text-muted-foreground text-xs italic">
+                (Sahih al-Bukhari 2736 - Book 54, Hadith 23)
+              </span>
+            </p>
+
             <p className="text-foreground/90 text-center">
               <span className="font-uthmanic" dir="rtl" lang="ar">
                 حَدَّثَنَا عَلِيُّ بْنُ عَبْدِ اللَّهِ، حَدَّثَنَا سُفْيَانُ،
