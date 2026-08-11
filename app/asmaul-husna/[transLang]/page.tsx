@@ -42,22 +42,26 @@ export async function generateMetadata({
     return { title: "Asma-ul-Husna" };
   }
 
-  const ogTitle = "The 99 Names and Attributes of Allah (SWT)";
-  const description = `Read and reflect on the 99 Names of Allah in Arabic, with transliteration and translation in multiple languages.`;
+  const title = `99 Names of Allah (Asmaul Husna) — Arabic & ${lang.name} Translation`;
+  const description = `Read, listen, and reflect on the 99 Names of Allah (SWT) in Arabic, with transliteration and translation in ${lang.name}.`;
   const url = `/asmaul-husna/${transLang}`;
 
   return {
+    title,
     description,
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
-      title: ogTitle,
+      title,
       description,
       url,
       type: "website",
-      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: ogTitle }],
+      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: title }],
     },
     twitter: {
       card: "summary_large_image",
-      title: ogTitle,
+      title,
       description,
       images: ["/og-image.png"],
     },
@@ -84,40 +88,60 @@ export default async function ViewerPage({ params }: PageProps) {
     ? Object.fromEntries(quranRefRows.map((r) => [r.name_id, r]))
     : undefined;
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": `99 Names of Allah (Asmaul Husna) — ${lang.name} Translation`,
+    "description": `List of the 99 Names of Allah with Arabic text, transliteration, and translation in ${lang.name}.`,
+    "numberOfItems": names.length,
+    "itemListElement": names.map((n, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "name": n.transliteration || `Name ${n.sequence}`,
+      "description": `${n.arabic} - ${n.translation || ""}`,
+    })),
+  };
+
   return (
-    <main className="container mx-auto p-6">
-      <div className="mb-6 flex flex-col gap-2">
-        <div className="flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
-          <h1 className="text-2xl font-semibold">Asma-ul-Husna</h1>
-          <h2 className="text-lg font-semibold text-gray-400 text-center">
-            The 99 Names and Attributes of Allah (SWT)
-          </h2>
-          <div className="flex items-center gap-2">
-            <ShareButton />
-            <ThemeToggle />
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/asmaul-husna/settings">
-                <SettingsIcon className="mr-2 h-4 w-4" />
-                Settings
-              </Link>
-            </Button>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main className="container mx-auto p-6">
+        <div className="mb-6 flex flex-col gap-2">
+          <div className="flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
+            <h1 className="text-2xl font-semibold">Asma-ul-Husna</h1>
+            <h2 className="text-lg font-semibold text-gray-400 text-center">
+              The 99 Names and Attributes of Allah (SWT)
+            </h2>
+            <div className="flex items-center gap-2">
+              <ShareButton />
+              <ThemeToggle />
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/asmaul-husna/settings">
+                  <SettingsIcon className="mr-2 h-4 w-4" />
+                  Settings
+                </Link>
+              </Button>
+            </div>
+          </div>
+          <div className="text-gray-500 text-center text-xl">
+            وَلِلَّهِ ٱلۡأَسۡمَآءُ ٱلۡحُسۡنَىٰ فَٱدۡعُوهُ بِهَاۖ
+          </div>
+          <div className="italic text-gray-500 text-center text-xs">
+            And to Allah belong the best names, so invoke Him by them.{" "}
+            <span className="text-xs">(Quran - Surah Al-A&apos;raf - 7:180)</span>
           </div>
         </div>
-        <div className="text-gray-500 text-center text-xl">
-          وَلِلَّهِ ٱلۡأَسۡمَآءُ ٱلۡحُسۡنَىٰ فَٱدۡعُوهُ بِهَاۖ
-        </div>
-        <div className="italic text-gray-500 text-center text-xs">
-          And to Allah belong the best names, so invoke Him by them.{" "}
-          <span className="text-xs">(Quran - Surah Al-A&apos;raf - 7:180)</span>
-        </div>
-      </div>
-      <NameGrid
-        names={names}
-        recitation={recitation}
-        transliterationDirection={lang.direction}
-        translationDirection={lang.direction}
-        quranRefs={quranRefs}
-      />
-    </main>
+        <NameGrid
+          names={names}
+          recitation={recitation}
+          transliterationDirection={lang.direction}
+          translationDirection={lang.direction}
+          quranRefs={quranRefs}
+        />
+      </main>
+    </>
   );
 }

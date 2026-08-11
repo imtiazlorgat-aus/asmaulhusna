@@ -27,6 +27,11 @@ export const metadata: Metadata = {
     "Arabic",
     "Transliteration",
     "Translation",
+    "Asma-ul-Husna",
+    "Asma ul Husna",
+    "99NamesofAllah",
+    "99-Names-of-Allah",
+    "The99Names",
     "Uthmanic",
   ],
   openGraph: {
@@ -54,6 +59,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  alternates: {
+    canonical: "/",
   },
   icons: {
     icon: [
