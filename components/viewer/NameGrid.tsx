@@ -65,6 +65,10 @@ export function NameGrid({
     currentPage: 1,
     perPage: namesPerPage,
   });
+  // Which way panels should animate in from. Set right before each
+  // page-changing action (swipe or pagination button) so NamePanel's
+  // entrance animation matches the direction the user navigated.
+  const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const touchStart = useRef<{ x: number; y: number } | null>(null);
 
   const effectivePage = perPage === namesPerPage ? currentPage : 1;
@@ -146,11 +150,21 @@ export function NameGrid({
     const absDx = Math.abs(dx);
     const absDy = Math.abs(dy);
     if (swipeLeftRight && absDx >= 50 && absDx >= absDy) {
-      if (dx < 0) setCurrentPage((p) => Math.min(totalPages, p + 1));
-      else setCurrentPage((p) => Math.max(1, p - 1));
+      if (dx < 0) {
+        setDirection('next');
+        setCurrentPage((p) => Math.min(totalPages, p + 1));
+      } else {
+        setDirection('prev');
+        setCurrentPage((p) => Math.max(1, p - 1));
+      }
     } else if (swipeUpDown && absDy >= 50 && absDy > absDx) {
-      if (dy < 0) setCurrentPage((p) => Math.min(totalPages, p + 1));
-      else setCurrentPage((p) => Math.max(1, p - 1));
+      if (dy < 0) {
+        setDirection('next');
+        setCurrentPage((p) => Math.min(totalPages, p + 1));
+      } else {
+        setDirection('prev');
+        setCurrentPage((p) => Math.max(1, p - 1));
+      }
     }
   };
 
@@ -183,6 +197,7 @@ export function NameGrid({
             isActive={audio.activeNameId === name.id}
             onPlay={onPanelPlay}
             quranRef={quranRefs?.[name.id]}
+            direction={direction}
           />
         ))}
       </div>
@@ -190,10 +205,22 @@ export function NameGrid({
       <PaginationControls
         currentPage={effectivePage}
         totalPages={totalPages}
-        onFirst={() => setCurrentPage(1)}
-        onPrevious={() => setCurrentPage((p) => Math.max(1, p - 1))}
-        onNext={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-        onLast={() => setCurrentPage(totalPages)}
+        onFirst={() => {
+          setDirection('prev');
+          setCurrentPage(1);
+        }}
+        onPrevious={() => {
+          setDirection('prev');
+          setCurrentPage((p) => Math.max(1, p - 1));
+        }}
+        onNext={() => {
+          setDirection('next');
+          setCurrentPage((p) => Math.min(totalPages, p + 1));
+        }}
+        onLast={() => {
+          setDirection('next');
+          setCurrentPage(totalPages);
+        }}
       />
 
       <div className="flex flex-wrap items-center justify-center gap-3">

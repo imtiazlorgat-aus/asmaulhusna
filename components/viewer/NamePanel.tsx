@@ -30,6 +30,12 @@ interface NamePanelProps {
    */
   isActive?: boolean;
   /**
+   * Which way the panel should animate in from. The parent sets this
+   * based on swipe/pagination direction so the entrance motion matches
+   * the direction the user is navigating.
+   */
+  direction?: 'next' | 'prev';
+  /**
    * Optional handler for the per-panel speaker button. When omitted,
    * the speaker button is hidden (e.g., when no recitation is loaded).
    */
@@ -57,6 +63,7 @@ export function NamePanel({
   isActive = false,
   onPlay,
   quranRef,
+  direction = 'next',
 }: NamePanelProps) {
   const showTransliteration = useShowTransliteration();
   const showTranslation = useShowTranslation();
@@ -74,6 +81,8 @@ export function NamePanel({
     <Card
       className={cn(
         'relative flex flex-col items-center justify-center gap-4 overflow-hidden p-6 text-center shadow-lg transition-shadow duration-200',
+        'animate-in fade-in duration-300 ease-out motion-reduce:animate-none',
+        direction === 'prev' ? 'slide-in-from-left-8' : 'slide-in-from-right-8',
         isActive && 'ring-2 ring-primary ring-offset-2 ring-offset-background',
       )}
       style={
